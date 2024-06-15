@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="ApprovalRequests\Queries\" />
-    <Folder Include="Employees\Commands\" />
     <Folder Include="LeaveRequests\Commands\" />
     <Folder Include="LeaveRequests\Queries\" />
   </ItemGroup>
