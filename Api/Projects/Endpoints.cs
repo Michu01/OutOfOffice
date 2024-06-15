@@ -1,4 +1,7 @@
-﻿using Api.Common;
+﻿using System.Security.Claims;
+
+using Api.Common;
+using Api.Identity;
 using Api.Projects.Commands;
 using Api.Projects.Queries;
 
@@ -14,10 +17,13 @@ public static class Endpoints
     {
         var group = builder
             .MapGroup("projects")
-            .WithTags("Projects");
+            .WithTags("Projects")
+            .RequireAuthorization();
 
         group.MapGet(string.Empty, GetProjects);
-        group.MapPost(string.Empty, PostProject);
+        group
+            .MapPost(string.Empty, PostProject)
+            .RequireAuthorization(nameof(Policy.ManageProjects));
     }
 
     private static async Task<IResult> GetProjects(IMediator mediator, [AsParameters] GetProjects request)

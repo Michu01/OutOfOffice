@@ -26,4 +26,6 @@ public class Project
     public string? Comment { get; set; }
 
     public required ProjectStatus Status { get; set; }
+
+    public virtual ICollection<Employee> Employees { get; set; } = [];
 }

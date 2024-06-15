@@ -1,6 +1,7 @@
 ﻿using Api.Common;
 using Api.Employees.Commands;
 using Api.Employees.Queries;
+using Api.Identity;
 using Api.Projects.Queries;
 
 using FluentValidation;
@@ -15,10 +16,12 @@ public static class Endpoints
     {
         var group = builder
             .MapGroup("employees")
-            .WithTags("Employees");
+            .WithTags("Employees")
+            .RequireAuthorization();
 
         group.MapGet(string.Empty, GetEmployees);
-        group.MapPost(string.Empty, PostEmployee);
+        group.MapPost(string.Empty, PostEmployee)
+            .RequireAuthorization(nameof(Policy.ManageEmployees));
     }
 
     private static async Task<IResult> GetEmployees(IMediator mediator, [AsParameters] GetEmployees request)

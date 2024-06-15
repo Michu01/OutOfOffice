@@ -2,6 +2,7 @@
 
 using Api.ApprovalRequests;
 using Api.LeaveRequests;
+using Api.Projects;
 
 namespace Api.Employees;
 
@@ -28,4 +29,10 @@ public class Employee
     public virtual ICollection<LeaveRequest> LeaveRequests { get; init; } = [];
 
     public virtual ICollection<ApprovalRequest> ApprovalRequests { get; init; } = [];
+
+    public virtual ICollection<Project> Projects { get; init; } = [];
+
+    public virtual ICollection<Project> ManagedProjects { get; init; } = [];
+
+    public virtual ICollection<Employee> Employees { get; init; } = [];
 }

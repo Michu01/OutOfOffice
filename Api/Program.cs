@@ -3,10 +3,12 @@ using System.Text.Json.Serialization;
 
 using Api.Common;
 using Api.Employees;
+using Api.Identity;
 using Api.Projects;
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +26,23 @@ builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddDefaultPolicy(nameof(Policy.Default), policy =>
+        policy.RequireAuthenticatedUser())
+    .AddPolicy(nameof(Policy.CreateLeaveRequest), policy =>
+        policy.RequireRole(nameof(EmployeePosition.Employee)))
+    .AddPolicy(nameof(Policy.ManageEmployees), policy =>
+        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.HRManager)))
+    .AddPolicy(nameof(Policy.ManageProjects), policy =>
+        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager)));
 
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -48,6 +67,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapIdentityEndpoints();
 app.MapProjectEndpoints();
 app.MapEmployeeEndpoints();
 

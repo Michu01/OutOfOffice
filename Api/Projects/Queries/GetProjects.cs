@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
+using System.Security.Claims;
 
 using Api.Common;
+using Api.Employees;
 
 using MediatR;
 
@@ -8,7 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Projects.Queries;
 
+public enum Sort
+{
+    Newest, Oldest, Shortest, Longest
+}
+
 public record GetProjects(
+    ClaimsPrincipal User,
     int Page = 1,
     int Limit = 30,
     string? Status = null, 
@@ -16,15 +24,56 @@ public record GetProjects(
     int? ProjectManagerId = null,
     bool Active = false,
     bool Finished = false,
-    string Sort = "newest") : 
+    Sort Sort = Sort.Newest) : 
     IRequest<PaginatedResult<Project>>;
 
 public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandler<GetProjects, PaginatedResult<Project>>
 {
     public async Task<PaginatedResult<Project>> Handle(GetProjects request, CancellationToken cancellationToken)
     {
-        var query = dbContext
-            .Projects
+        var position = Enum.Parse<EmployeePosition>(request.User.FindFirstValue(ClaimTypes.Role)!);
+        var id = int.Parse(request.User.FindFirstValue("Id")!);
+
+        IQueryable<Project> query;
+
+        switch (position)
+        {
+            case EmployeePosition.Administrator:
+                query = dbContext.Projects;
+                break;
+            case EmployeePosition.HRManager:
+                {
+                    query = dbContext
+                        .Employees
+                        .Where(e => e.Id == id)
+                        .SelectMany(e => e.Employees)
+                        .SelectMany(e => e.Projects);
+                    break;
+                }
+
+            case EmployeePosition.ProjectManager:
+                {
+                    query = dbContext
+                        .Employees
+                        .Where(e => e.Id == id)
+                        .SelectMany(e => e.ManagedProjects);
+                    break;
+                }
+
+            case EmployeePosition.Employee:
+                {
+                    query = dbContext
+                        .Employees
+                        .Where(e => e.Id == id)
+                        .SelectMany(e => e.Projects);
+                    break;
+                }
+
+            default:
+                throw new NotImplementedException();
+        }
+
+        query = query
             .Include(e => e.ProjectManager)
             .AsNoTracking();
 
@@ -52,10 +101,11 @@ public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandl
 
         query = request.Sort switch
         {
-            "shortest" => query.OrderBy(getDurationInDays),
-            "longest" => query.OrderByDescending(getDurationInDays),
-            "oldest" => query.OrderBy(e => e.StartDate),
-            _ => query.OrderByDescending(e => e.StartDate)
+            Sort.Shortest => query.OrderBy(getDurationInDays),
+            Sort.Longest => query.OrderByDescending(getDurationInDays),
+            Sort.Oldest => query.OrderBy(e => e.StartDate),
+            Sort.Newest => query.OrderByDescending(e => e.StartDate),
+            _ => throw new NotImplementedException()
         };
 
         var result = await query.ToPaginatedResult(request.Page, request.Limit, cancellationToken);

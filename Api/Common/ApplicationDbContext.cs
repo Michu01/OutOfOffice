@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-using Api.ApprovalRequests;
+﻿using Api.ApprovalRequests;
 using Api.Employees;
 using Api.LeaveRequests;
 using Api.Projects;
@@ -31,6 +29,20 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<LeaveRequest>()
             .HasOne(e => e.Employee)
             .WithMany(e => e.LeaveRequests)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Employee>()
+            .HasMany(e => e.Projects)
+            .WithMany(e => e.Employees);
+
+        modelBuilder.Entity<Employee>()
+            .HasMany(e => e.ManagedProjects)
+            .WithOne(e => e.ProjectManager)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Employee>()
+            .HasMany(e => e.Employees)
+            .WithOne(e => e.PeoplePartner)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }
