@@ -1,4 +1,11 @@
-﻿using Api.Common;
+﻿using System.Security.Claims;
+
+using Api.Common;
+using Api.Common.Extensions;
+using Api.Employees.Enums;
+using Api.Employees.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using MediatR;
 
@@ -12,6 +19,7 @@ public enum Sort
 }
 
 public record GetEmployees(
+    ClaimsPrincipal User,
     int Page = 1,
     int Limit = 30,
     string? FullName = null,
@@ -23,12 +31,43 @@ public record GetEmployees(
     Sort Sort = Sort.NameAsc) :
     IRequest<PaginatedResult<Employee>>;
 
-public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandler<GetEmployees, PaginatedResult<Employee>>
+public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetEmployees, PaginatedResult<Employee>>
 {
     public async Task<PaginatedResult<Employee>> Handle(GetEmployees request, CancellationToken cancellationToken)
     {
-        var query = dbContext
-            .Employees
+        var position = request.User.GetPosition();
+        var id = request.User.GetId();
+
+        IQueryable<EmployeeEntity> query;
+
+        switch (position)
+        {
+            case EmployeePosition.Administrator:
+                query = dbContext.Employees;
+                break;
+            case EmployeePosition.HRManager:
+                {
+                    query = dbContext
+                        .Employees
+                        .Where(e => e.PeoplePartnerId == id)
+                        .SelectMany(e => e.Employees);
+                    break;
+                }
+
+            case EmployeePosition.ProjectManager:
+                {
+                    query = dbContext
+                        .Projects
+                        .Where(e => e.ProjectManagerId == id)
+                        .SelectMany(e => e.Employees);
+                    break;
+                }
+
+            default:
+                throw new NotImplementedException();
+        }
+
+        query = query
             .Include(e => e.PeoplePartner)
             .AsNoTracking();
 
@@ -71,7 +110,9 @@ public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandl
             _ => throw new NotImplementedException()
         };
 
-        var result = await query.ToPaginatedResult(request.Page, request.Limit, cancellationToken);
+        var result = await query
+            .ProjectTo<Employee>(mapper.ConfigurationProvider)
+            .ToPaginatedResult(request.Page, request.Limit, cancellationToken);
 
         return result;
     }

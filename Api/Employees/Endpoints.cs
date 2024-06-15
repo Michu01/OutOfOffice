@@ -1,8 +1,8 @@
-﻿using Api.Common;
+﻿using Api.Common.Extensions;
 using Api.Employees.Commands;
+using Api.Employees.Models;
 using Api.Employees.Queries;
 using Api.Identity;
-using Api.Projects.Queries;
 
 using FluentValidation;
 
@@ -16,11 +16,18 @@ public static class Endpoints
     {
         var group = builder
             .MapGroup("employees")
-            .WithTags("Employees")
-            .RequireAuthorization();
+            .WithTags("Employees");
 
-        group.MapGet(string.Empty, GetEmployees);
-        group.MapPost(string.Empty, PostEmployee)
+        group
+            .MapGet(string.Empty, GetEmployees)
+            .RequireAuthorization(nameof(Policy.ViewEmployees));
+
+        group
+            .MapGet("{id}", GetEmployee)
+            .RequireAuthorization(nameof(Policy.ViewEmployees));
+
+        group
+            .MapPost(string.Empty, PostEmployee)
             .RequireAuthorization(nameof(Policy.ManageEmployees));
     }
 
@@ -29,6 +36,13 @@ public static class Endpoints
         var result = await mediator.Send(request);
 
         return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetEmployee(IMediator mediator, [AsParameters] GetEmployee request)
+    {
+        var result = await mediator.Send(request);
+
+        return result.MapToResponse();
     }
 
     private static async Task<IResult> PostEmployee(IMediator mediator, IValidator<CreateEmployee> validator, CreateEmployee employee)

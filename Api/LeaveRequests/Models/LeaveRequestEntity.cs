@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Api.Employees.Models;
 
-using Api.Employees;
+namespace Api.LeaveRequests.Models;
 
-namespace Api.LeaveRequests;
-
-public class LeaveRequest
+public class LeaveRequestEntity
 {
     public int Id { get; init; }
 
     public int EmployeeId { get; init; }
 
-    public virtual Employee? Employee { get; init; }
+    public virtual EmployeeEntity? Employee { get; init; }
 
     [MaxLength(Constants.MaxAbsenceReasonLength)]
     public required string AbsenceReason { get; set; }

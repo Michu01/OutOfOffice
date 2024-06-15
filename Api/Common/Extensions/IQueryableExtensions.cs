@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Api.Common;
+namespace Api.Common.Extensions;
 
 public static class IQueryableExtensions
 {

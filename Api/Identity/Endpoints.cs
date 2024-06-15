@@ -1,4 +1,4 @@
-﻿using Api.Common;
+﻿using Api.Common.Extensions;
 using Api.Identity.Commands;
 
 using MediatR;

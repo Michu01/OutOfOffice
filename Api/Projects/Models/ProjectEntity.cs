@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Api.Employees.Models;
+using Api.Projects.Enums;
 
-using Api.Employees;
+namespace Api.Projects.Models;
 
-namespace Api.Projects;
-
-public class Project
+public class ProjectEntity
 {
     public int Id { get; init; }
 
@@ -20,12 +20,12 @@ public class Project
 
     public int ProjectManagerId { get; set; }
 
-    public virtual Employee? ProjectManager { get; set; }
+    public virtual EmployeeEntity? ProjectManager { get; set; }
 
     [MaxLength(Constants.MaxCommentLength)]
     public string? Comment { get; set; }
 
     public required ProjectStatus Status { get; set; }
 
-    public virtual ICollection<Employee> Employees { get; set; } = [];
+    public virtual ICollection<EmployeeEntity> Employees { get; set; } = [];
 }

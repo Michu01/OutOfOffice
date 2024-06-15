@@ -1,4 +1,4 @@
-﻿namespace Api.Projects;
+﻿namespace Api.Projects.Enums;
 
 public enum ProjectStatus
 {

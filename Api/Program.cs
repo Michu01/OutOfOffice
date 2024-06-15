@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 using Api.Common;
 using Api.Employees;
+using Api.Employees.Enums;
 using Api.Identity;
 using Api.Projects;
 
@@ -42,7 +43,11 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy(nameof(Policy.ManageEmployees), policy =>
         policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.HRManager)))
     .AddPolicy(nameof(Policy.ManageProjects), policy =>
-        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager)));
+        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager)))
+    .AddPolicy(nameof(Policy.ViewEmployees), policy =>
+        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
+    .AddPolicy(nameof(Policy.ViewProjects), policy =>
+        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)));
 
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

@@ -2,7 +2,12 @@
 using System.Security.Claims;
 
 using Api.Common;
-using Api.Employees;
+using Api.Common.Extensions;
+using Api.Employees.Enums;
+using Api.Projects.Enums;
+using Api.Projects.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using MediatR;
 
@@ -27,14 +32,14 @@ public record GetProjects(
     Sort Sort = Sort.Newest) : 
     IRequest<PaginatedResult<Project>>;
 
-public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandler<GetProjects, PaginatedResult<Project>>
+public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetProjects, PaginatedResult<Project>>
 {
     public async Task<PaginatedResult<Project>> Handle(GetProjects request, CancellationToken cancellationToken)
     {
-        var position = Enum.Parse<EmployeePosition>(request.User.FindFirstValue(ClaimTypes.Role)!);
-        var id = int.Parse(request.User.FindFirstValue("Id")!);
+        var position = request.User.GetPosition();
+        var id = request.User.GetId();
 
-        IQueryable<Project> query;
+        IQueryable<ProjectEntity> query;
 
         switch (position)
         {
@@ -45,8 +50,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandl
                 {
                     query = dbContext
                         .Employees
-                        .Where(e => e.Id == id)
-                        .SelectMany(e => e.Employees)
+                        .Where(e => e.PeoplePartnerId == id)
                         .SelectMany(e => e.Projects);
                     break;
                 }
@@ -97,7 +101,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandl
             query = query.Where(e => e.Status == ProjectStatus.Active);
         }
 
-        Expression<Func<Project, int?>> getDurationInDays = e => e.EndDate == null ? null : e.EndDate.Value.DayNumber - e.StartDate.DayNumber;
+        Expression<Func<ProjectEntity, int?>> getDurationInDays = e => e.EndDate == null ? null : e.EndDate.Value.DayNumber - e.StartDate.DayNumber;
 
         query = request.Sort switch
         {
@@ -108,7 +112,9 @@ public class GetProjectsHandler(IApplicationDbContext dbContext) : IRequestHandl
             _ => throw new NotImplementedException()
         };
 
-        var result = await query.ToPaginatedResult(request.Page, request.Limit, cancellationToken);
+        var result = await query
+            .ProjectTo<Project>(mapper.ConfigurationProvider)
+            .ToPaginatedResult(request.Page, request.Limit, cancellationToken);
 
         return result;
     }

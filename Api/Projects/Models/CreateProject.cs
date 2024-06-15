@@ -1,4 +1,4 @@
-﻿namespace Api.Projects;
+﻿namespace Api.Projects.Models;
 
 public record CreateProject(
     string Name,

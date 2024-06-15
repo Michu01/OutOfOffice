@@ -1,4 +1,4 @@
-﻿namespace Api.Employees;
+﻿namespace Api.Employees.Enums;
 
 public enum EmployeePosition
 {

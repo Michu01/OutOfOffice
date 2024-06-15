@@ -22,7 +22,7 @@ namespace Api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Api.ApprovalRequests.ApprovalRequest", b =>
+            modelBuilder.Entity("Api.ApprovalRequests.ApprovalRequestEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace Api.Migrations
                     b.ToTable("ApprovalRequests");
                 });
 
-            modelBuilder.Entity("Api.Employees.Employee", b =>
+            modelBuilder.Entity("Api.Employees.EmployeeEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace Api.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Api.LeaveRequests.LeaveRequest", b =>
+            modelBuilder.Entity("Api.LeaveRequests.LeaveRequestEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace Api.Migrations
                     b.ToTable("LeaveRequests");
                 });
 
-            modelBuilder.Entity("Api.Projects.Project", b =>
+            modelBuilder.Entity("Api.Projects.ProjectEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -170,7 +170,7 @@ namespace Api.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("EmployeeProject", b =>
+            modelBuilder.Entity("EmployeeEntityProjectEntity", b =>
                 {
                     b.Property<int>("EmployeesId")
                         .HasColumnType("int");
@@ -182,18 +182,18 @@ namespace Api.Migrations
 
                     b.HasIndex("ProjectsId");
 
-                    b.ToTable("EmployeeProject");
+                    b.ToTable("EmployeeEntityProjectEntity");
                 });
 
-            modelBuilder.Entity("Api.ApprovalRequests.ApprovalRequest", b =>
+            modelBuilder.Entity("Api.ApprovalRequests.ApprovalRequestEntity", b =>
                 {
-                    b.HasOne("Api.Employees.Employee", "Approver")
+                    b.HasOne("Api.Employees.EmployeeEntity", "Approver")
                         .WithMany("ApprovalRequests")
                         .HasForeignKey("ApproverId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Api.LeaveRequests.LeaveRequest", "LeaveRequest")
+                    b.HasOne("Api.LeaveRequests.LeaveRequestEntity", "LeaveRequest")
                         .WithMany()
                         .HasForeignKey("LeaveRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -204,9 +204,9 @@ namespace Api.Migrations
                     b.Navigation("LeaveRequest");
                 });
 
-            modelBuilder.Entity("Api.Employees.Employee", b =>
+            modelBuilder.Entity("Api.Employees.EmployeeEntity", b =>
                 {
-                    b.HasOne("Api.Employees.Employee", "PeoplePartner")
+                    b.HasOne("Api.Employees.EmployeeEntity", "PeoplePartner")
                         .WithMany("Employees")
                         .HasForeignKey("PeoplePartnerId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -214,9 +214,9 @@ namespace Api.Migrations
                     b.Navigation("PeoplePartner");
                 });
 
-            modelBuilder.Entity("Api.LeaveRequests.LeaveRequest", b =>
+            modelBuilder.Entity("Api.LeaveRequests.LeaveRequestEntity", b =>
                 {
-                    b.HasOne("Api.Employees.Employee", "Employee")
+                    b.HasOne("Api.Employees.EmployeeEntity", "Employee")
                         .WithMany("LeaveRequests")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -225,9 +225,9 @@ namespace Api.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Api.Projects.Project", b =>
+            modelBuilder.Entity("Api.Projects.ProjectEntity", b =>
                 {
-                    b.HasOne("Api.Employees.Employee", "ProjectManager")
+                    b.HasOne("Api.Employees.EmployeeEntity", "ProjectManager")
                         .WithMany("ManagedProjects")
                         .HasForeignKey("ProjectManagerId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -236,22 +236,22 @@ namespace Api.Migrations
                     b.Navigation("ProjectManager");
                 });
 
-            modelBuilder.Entity("EmployeeProject", b =>
+            modelBuilder.Entity("EmployeeEntityProjectEntity", b =>
                 {
-                    b.HasOne("Api.Employees.Employee", null)
+                    b.HasOne("Api.Employees.EmployeeEntity", null)
                         .WithMany()
                         .HasForeignKey("EmployeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Api.Projects.Project", null)
+                    b.HasOne("Api.Projects.ProjectEntity", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Api.Employees.Employee", b =>
+            modelBuilder.Entity("Api.Employees.EmployeeEntity", b =>
                 {
                     b.Navigation("ApprovalRequests");
 

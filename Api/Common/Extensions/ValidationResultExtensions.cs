@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Api.Common;
+namespace Api.Common.Extensions;
 
 public static class ValidationResultExtensions
 {

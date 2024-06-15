@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 
+using Api.Common.FluentResults;
 using Api.Employees.Queries;
 
 using FluentResults;
@@ -21,7 +22,7 @@ public class SignInHandler(IMediator mediator) : IRequestHandler<SignIn, Result>
 
         if (employee is null)
         {
-            return Result.Fail($"Employee with name \"{request.FullName}\" not found");
+            return Result.Fail(new NotFoundResult("Employee", nameof(request.FullName), request.FullName));
         }
 
         var claims = new List<Claim>

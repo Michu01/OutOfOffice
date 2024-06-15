@@ -1,21 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Api.Employees.Models;
+using Api.LeaveRequests.Models;
 
-using Api.Employees;
-using Api.LeaveRequests;
+namespace Api.ApprovalRequests.Models;
 
-namespace Api.ApprovalRequests;
-
-public class ApprovalRequest
+public class ApprovalRequestEntity
 {
     public int Id { get; init; }
 
     public int ApproverId { get; init; }
 
-    public virtual Employee? Approver { get; init; }
+    public virtual EmployeeEntity? Approver { get; init; }
 
     public int LeaveRequestId { get; init; }
 
-    public virtual LeaveRequest? LeaveRequest { get; init; }
+    public virtual LeaveRequestEntity? LeaveRequest { get; init; }
 
     [MaxLength(Constants.MaxStatusLength)]
     public required string Status { get; set; }

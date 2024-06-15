@@ -1,4 +1,5 @@
-﻿using Api.Employees.Queries;
+﻿using Api.Employees.Models;
+using Api.Employees.Queries;
 
 using FluentValidation;
 

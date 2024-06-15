@@ -1,4 +1,6 @@
-﻿namespace Api.Employees;
+﻿using Api.Employees.Enums;
+
+namespace Api.Employees.Models;
 
 public record CreateEmployee(
     string FullName,

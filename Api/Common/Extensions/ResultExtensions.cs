@@ -1,8 +1,8 @@
-﻿using FluentResults;
+﻿using Api.Common.FluentResults;
 
-using Microsoft.AspNetCore.Mvc;
+using FluentResults;
 
-namespace Api.Common;
+namespace Api.Common.Extensions;
 
 public static class ResultExtensions
 {
@@ -15,12 +15,12 @@ public static class ResultExtensions
 
         var firstError = result.Errors.First();
 
-        if (firstError is NotFoundResult)
+        return firstError switch
         {
-            return Results.NotFound(firstError.Message);
-        }
-
-        return Results.Problem(title: firstError.Message);
+            NotFoundResult => Results.NotFound(firstError.Message),
+            ForbiddenResult => Results.Problem(firstError.Message, statusCode: StatusCodes.Status403Forbidden),
+            _ => Results.Problem(firstError.Message)
+        };
     }
 
     public static IResult MapToResponse<T>(this Result<T> result)

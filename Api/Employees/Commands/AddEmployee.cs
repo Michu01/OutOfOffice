@@ -1,18 +1,18 @@
 ﻿using Api.Common;
-
+using Api.Employees.Models;
 using AutoMapper;
 
 using MediatR;
 
 namespace Api.Employees.Commands;
 
-public record AddEmployee(CreateEmployee Employee) : IRequest<Employee>;
+public record AddEmployee(CreateEmployee Employee) : IRequest<EmployeeEntity>;
 
-public class AddEmployeeHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<AddEmployee, Employee>
+public class AddEmployeeHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<AddEmployee, EmployeeEntity>
 {
-    public async Task<Employee> Handle(AddEmployee request, CancellationToken cancellationToken)
+    public async Task<EmployeeEntity> Handle(AddEmployee request, CancellationToken cancellationToken)
     {
-        var entity = mapper.Map<Employee>(request.Employee);
+        var entity = mapper.Map<EmployeeEntity>(request.Employee);
 
         dbContext.Employees.Add(entity);
 

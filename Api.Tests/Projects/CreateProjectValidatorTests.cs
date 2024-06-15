@@ -4,7 +4,7 @@ using Api.Common;
 using Api.Employees;
 using Api.Employees.Queries;
 using Api.Projects;
-
+using Api.Projects.Models;
 using AutoFixture;
 
 using FluentAssertions;

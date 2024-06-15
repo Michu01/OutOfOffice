@@ -5,5 +5,7 @@ public enum Policy
     Default,
     CreateLeaveRequest,
     ManageEmployees,
-    ManageProjects
+    ManageProjects,
+    ViewEmployees,
+    ViewProjects
 }

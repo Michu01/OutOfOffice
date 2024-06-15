@@ -1,5 +1,5 @@
 ﻿using Api.Common;
-
+using Api.Employees.Enums;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;

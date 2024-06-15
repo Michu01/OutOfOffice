@@ -1,21 +1,20 @@
-﻿using Api.ApprovalRequests;
-using Api.Employees;
-using Api.LeaveRequests;
-using Api.Projects;
-
+﻿using Api.ApprovalRequests.Models;
+using Api.Employees.Models;
+using Api.LeaveRequests.Models;
+using Api.Projects.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Common;
 
 public interface IApplicationDbContext
 {
-    DbSet<ApprovalRequest> ApprovalRequests { get; }
+    DbSet<ApprovalRequestEntity> ApprovalRequests { get; }
 
-    DbSet<Employee> Employees { get; }
+    DbSet<EmployeeEntity> Employees { get; }
 
-    DbSet<LeaveRequest> LeaveRequests { get; }
+    DbSet<LeaveRequestEntity> LeaveRequests { get; }
 
-    DbSet<Project> Projects { get; }
+    DbSet<ProjectEntity> Projects { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

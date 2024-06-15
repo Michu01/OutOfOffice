@@ -1,8 +1,7 @@
-﻿using System.Security.Claims;
-
-using Api.Common;
+﻿using Api.Common.Extensions;
 using Api.Identity;
 using Api.Projects.Commands;
+using Api.Projects.Models;
 using Api.Projects.Queries;
 
 using FluentValidation;
@@ -17,10 +16,16 @@ public static class Endpoints
     {
         var group = builder
             .MapGroup("projects")
-            .WithTags("Projects")
-            .RequireAuthorization();
+            .WithTags("Projects");
 
-        group.MapGet(string.Empty, GetProjects);
+        group
+            .MapGet(string.Empty, GetProjects)
+            .RequireAuthorization(nameof(Policy.ViewProjects));
+
+        group
+            .MapGet("{id}", GetProject)
+            .RequireAuthorization(nameof(Policy.ViewProjects));
+
         group
             .MapPost(string.Empty, PostProject)
             .RequireAuthorization(nameof(Policy.ManageProjects));
@@ -31,6 +36,13 @@ public static class Endpoints
         var result = await mediator.Send(request);
 
         return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetProject(IMediator mediator, [AsParameters] GetProject request)
+    {
+        var result = await mediator.Send(request);
+
+        return result.MapToResponse();
     }
 
     private static async Task<IResult> PostProject(IMediator mediator, IValidator<CreateProject> validator, CreateProject project)

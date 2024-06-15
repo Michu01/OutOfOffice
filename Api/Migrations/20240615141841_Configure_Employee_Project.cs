@@ -15,7 +15,7 @@ namespace Api.Migrations
                 table: "Projects");
 
             migrationBuilder.CreateTable(
-                name: "EmployeeProject",
+                name: "EmployeeEntityProjectEntity",
                 columns: table => new
                 {
                     EmployeesId = table.Column<int>(type: "int", nullable: false),
@@ -23,15 +23,15 @@ namespace Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeProject", x => new { x.EmployeesId, x.ProjectsId });
+                    table.PrimaryKey("PK_EmployeeEntityProjectEntity", x => new { x.EmployeesId, x.ProjectsId });
                     table.ForeignKey(
-                        name: "FK_EmployeeProject_Employees_EmployeesId",
+                        name: "FK_EmployeeEntityProjectEntity_Employees_EmployeesId",
                         column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeProject_Projects_ProjectsId",
+                        name: "FK_EmployeeEntityProjectEntity_Projects_ProjectsId",
                         column: x => x.ProjectsId,
                         principalTable: "Projects",
                         principalColumn: "Id",
@@ -39,8 +39,8 @@ namespace Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeProject_ProjectsId",
-                table: "EmployeeProject",
+                name: "IX_EmployeeEntityProjectEntity_ProjectsId",
+                table: "EmployeeEntityProjectEntity",
                 column: "ProjectsId");
 
             migrationBuilder.AddForeignKey(
@@ -59,7 +59,7 @@ namespace Api.Migrations
                 table: "Projects");
 
             migrationBuilder.DropTable(
-                name: "EmployeeProject");
+                name: "EmployeeEntityProjectEntity");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Projects_Employees_ProjectManagerId",
