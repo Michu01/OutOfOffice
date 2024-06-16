@@ -1,8 +1,9 @@
-﻿using Api.Employees.Models;
+﻿using Api.ApprovalRequests.Models;
+using Api.Employees.Models;
 
 namespace Api.LeaveRequests.Models;
 
-public record LeaveRequest
+public record LeaveRequestDetails
 {
     public int Id { get; init; }
 
@@ -17,4 +18,6 @@ public record LeaveRequest
     public string? Comment { get; init; }
 
     public required string Status { get; init; }
+
+    public required ICollection<LeaveRequestApprovalRequest> ApprovalRequests { get; init; }
 }
