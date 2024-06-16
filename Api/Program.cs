@@ -25,9 +25,10 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(configure =>
     {
         configure
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:5173")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -44,6 +45,8 @@ builder.Services.Configure<JsonOptions>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
         options.SlidingExpiration = true;
         options.Events.OnRedirectToLogin = context =>
@@ -96,10 +99,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(_ => { });
+
+app.UseSpa(e => e.UseProxyToSpaDevelopmentServer("http://localhost:5173"));
 
 app.MapIdentityEndpoints();
 app.MapProjectEndpoints();
