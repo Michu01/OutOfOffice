@@ -26,7 +26,7 @@ public class RejectRequestHandler(IApplicationDbContext dbContext) : IRequestHan
 
         if (approvalRequest.ApproverId != userId)
         {
-            return Result.Fail(new ForbiddenResult("ApprovalRequest", request.Id));
+            return Result.Fail(new ForbiddenResult());
         }
 
         if (approvalRequest.Status == ApprovalRequestStatus.Rejected)
@@ -75,7 +75,7 @@ public class RejectRequestHandler(IApplicationDbContext dbContext) : IRequestHan
 
         if (approvalRequest is null)
         {
-            return Result.Fail(new NotFoundResult("ApprovalRequest", request.Id));
+            return Result.Fail(new NotFoundResult("Approval request"));
         }
 
         var validationResult = ValidateRequest(approvalRequest, request);

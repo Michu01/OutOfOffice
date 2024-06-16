@@ -60,7 +60,7 @@ public class SubmitLeaveRequestHandler(IApplicationDbContext dbContext, IMapper 
 
         if (employee is null)
         {
-            return Result.Fail(new NotFoundResult("Employee", userId));
+            return Result.Fail(new NotFoundResult("Employee"));
         }
 
         var requestedDays = (request.LeaveRequest.EndDate.Date - request.LeaveRequest.StartDate.Date).Days + 1;

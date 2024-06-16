@@ -33,7 +33,7 @@ public class GetLeaveRequestHandler(IApplicationDbContext dbContext, IMapper map
 
         if (leaveRequest is null)
         {
-            return Result.Fail(new NotFoundResult("LeaveRequest", request.Id));
+            return Result.Fail(new NotFoundResult("Leave request"));
         }
 
         var position = request.User.GetPosition();
@@ -50,7 +50,7 @@ public class GetLeaveRequestHandler(IApplicationDbContext dbContext, IMapper map
 
         if (!hasAccess)
         {
-            return Result.Fail(new ForbiddenResult("LeaveRequest", request.Id));
+            return Result.Fail(new ForbiddenResult());
         }
 
         return mapper.Map<LeaveRequestDetails>(leaveRequest);

@@ -36,7 +36,7 @@ public class GetEmployeeHandler(IApplicationDbContext dbContext, IMapper mapper)
 
         if (entity is null)
         {
-            return Result.Fail(new NotFoundResult("Employee", request.Id));
+            return Result.Fail(new NotFoundResult("Employee"));
         }
 
         var position = request.User.GetPosition();
@@ -53,7 +53,7 @@ public class GetEmployeeHandler(IApplicationDbContext dbContext, IMapper mapper)
 
         if (!hasAccess)
         {
-            return Result.Fail(new ForbiddenResult("Employee", request.Id));
+            return Result.Fail(new ForbiddenResult());
         }
 
         return mapper.Map<EmployeeDetails>(entity);

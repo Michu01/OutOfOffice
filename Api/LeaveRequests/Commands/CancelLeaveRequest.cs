@@ -27,14 +27,14 @@ public class CancelLeaveRequestHandler(IApplicationDbContext dbContext) : IReque
 
         if (leaveRequest is null)
         {
-            return Result.Fail(new NotFoundResult("LeaveRequest", request.Id));
+            return Result.Fail(new NotFoundResult("Leave request"));
         }
 
         var userId = request.User.GetId();
 
         if (leaveRequest.EmployeeId != userId)
         {
-            return Result.Fail(new ForbiddenResult("LeaveRequest", request.Id));
+            return Result.Fail(new ForbiddenResult());
         }
 
         leaveRequest.Status = LeaveRequestStatus.Canceled;

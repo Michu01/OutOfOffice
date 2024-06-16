@@ -22,7 +22,7 @@ public class SignInHandler(IMediator mediator) : IRequestHandler<SignIn, Result>
 
         if (employee is null)
         {
-            return Result.Fail(new NotFoundResult("Employee", nameof(request.FullName), request.FullName));
+            return Result.Fail(new NotFoundResult("Employee"));
         }
 
         var claims = new List<Claim>

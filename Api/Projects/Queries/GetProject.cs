@@ -31,7 +31,7 @@ public class GetProjectHandler(IApplicationDbContext dbContext, IMapper mapper) 
 
         if (entity is null)
         {
-            return Result.Fail(new NotFoundResult("Project", request.Id));
+            return Result.Fail(new NotFoundResult("Project"));
         }
 
         var position = request.User.GetPosition();
@@ -48,7 +48,7 @@ public class GetProjectHandler(IApplicationDbContext dbContext, IMapper mapper) 
 
         if (!hasAccess)
         {
-            return Result.Fail(new ForbiddenResult("Employee", request.Id));
+            return Result.Fail(new ForbiddenResult());
         }
 
         return mapper.Map<ProjectDetails>(entity);
