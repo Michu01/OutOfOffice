@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 
+using Api.ApprovalRequests;
 using Api.Common;
 using Api.Employees;
 using Api.Employees.Enums;
@@ -36,18 +37,20 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddDefaultPolicy(nameof(Policy.Default), policy =>
-        policy.RequireAuthenticatedUser())
-    .AddPolicy(nameof(Policy.CreateLeaveRequest), policy =>
-        policy.RequireRole(nameof(EmployeePosition.Employee)))
-    .AddPolicy(nameof(Policy.ManageEmployees), policy =>
-        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.HRManager)))
-    .AddPolicy(nameof(Policy.ManageProjects), policy =>
-        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager)))
-    .AddPolicy(nameof(Policy.ViewEmployees), policy =>
-        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
-    .AddPolicy(nameof(Policy.ViewProjects), policy =>
-        policy.RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)));
+    .AddDefaultPolicy(nameof(Policy.Default), policy => policy
+        .RequireAuthenticatedUser())
+    .AddPolicy(nameof(Policy.CreateLeaveRequest), policy => policy
+        .RequireRole(nameof(EmployeePosition.Employee)))
+    .AddPolicy(nameof(Policy.ManageEmployees), policy => policy
+        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.HRManager)))
+    .AddPolicy(nameof(Policy.ManageProjects), policy => policy
+        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager)))
+    .AddPolicy(nameof(Policy.ViewEmployees), policy => policy
+        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
+    .AddPolicy(nameof(Policy.ViewProjects), policy => policy
+        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
+    .AddPolicy(nameof(Policy.ViewApprovalRequests), policy => policy
+        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)));
 
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -78,5 +81,6 @@ app.UseAuthorization();
 app.MapIdentityEndpoints();
 app.MapProjectEndpoints();
 app.MapEmployeeEndpoints();
+app.MapApprovalRequestEndpoints();
 
 app.Run();

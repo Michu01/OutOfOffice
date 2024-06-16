@@ -7,7 +7,7 @@ public record ApprovalRequest
 {
     public int Id { get; init; }
 
-    public required Employee Approver { get; init; }
+    public required EmployeeBrief Approver { get; init; }
 
     public required LeaveRequest LeaveRequest { get; init; }
 

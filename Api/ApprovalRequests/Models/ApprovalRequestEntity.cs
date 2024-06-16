@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
+using Api.ApprovalRequests.Enums;
 using Api.Employees.Models;
 using Api.LeaveRequests.Models;
 
@@ -16,8 +18,7 @@ public class ApprovalRequestEntity
 
     public virtual LeaveRequestEntity? LeaveRequest { get; init; }
 
-    [MaxLength(Constants.MaxStatusLength)]
-    public required string Status { get; set; }
+    public ApprovalRequestStatus Status { get; set; }
 
     [MaxLength(Constants.MaxCommentLength)]
     public string? Comment { get; set; }

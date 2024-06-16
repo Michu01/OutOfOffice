@@ -19,6 +19,7 @@ public static class ResultExtensions
         {
             NotFoundResult => Results.NotFound(firstError.Message),
             ForbiddenResult => Results.Problem(firstError.Message, statusCode: StatusCodes.Status403Forbidden),
+            BadRequestResult => Results.BadRequest(firstError.Message),
             _ => Results.Problem(firstError.Message)
         };
     }

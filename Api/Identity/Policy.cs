@@ -6,6 +6,8 @@ public enum Policy
     CreateLeaveRequest,
     ManageEmployees,
     ManageProjects,
+    ManageApprovalRequests,
     ViewEmployees,
-    ViewProjects
+    ViewProjects,
+    ViewApprovalRequests
 }

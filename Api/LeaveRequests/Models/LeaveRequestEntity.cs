@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
+using Api.ApprovalRequests.Models;
 using Api.Employees.Models;
+using Api.LeaveRequests.Enums;
 
 namespace Api.LeaveRequests.Models;
 
@@ -21,6 +24,7 @@ public class LeaveRequestEntity
     [MaxLength(Constants.MaxCommentLength)]
     public string? Comment { get; set; }
 
-    [MaxLength(Constants.MaxStatusLength)]
-    public required string Status { get; set; }
+    public required LeaveRequestStatus Status { get; set; }
+
+    public virtual ICollection<ApprovalRequestEntity> ApprovalRequests { get; init; } = [];
 }
