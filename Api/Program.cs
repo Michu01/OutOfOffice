@@ -108,10 +108,12 @@ app.UseEndpoints(_ => { });
 
 app.UseSpa(e => e.UseProxyToSpaDevelopmentServer("http://localhost:5173"));
 
-app.MapIdentityEndpoints();
-app.MapProjectEndpoints();
-app.MapEmployeeEndpoints();
-app.MapApprovalRequestEndpoints();
-app.MapLeaveRequestEndpoints();
+var group = app.MapGroup("api");
+
+group.MapIdentityEndpoints();
+group.MapProjectEndpoints();
+group.MapEmployeeEndpoints();
+group.MapApprovalRequestEndpoints();
+group.MapLeaveRequestEndpoints();
 
 app.Run();
