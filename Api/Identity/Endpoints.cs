@@ -21,11 +21,11 @@ public static class Endpoints
             .RequireAuthorization();
     }
 
-    private static async Task<IResult> SignIn(IMediator mediator, HttpContext httpContext, string fullName)
-    {
-        var request = new SignIn(httpContext, fullName);
+    private record SignInRequest(string FullName);
 
-        var result = await mediator.Send(request);
+    private static async Task<IResult> SignIn(IMediator mediator, HttpContext httpContext, SignInRequest request)
+    {
+        var result = await mediator.Send(new SignIn(httpContext, request.FullName));
 
         return result.MapToResponse();
     }
