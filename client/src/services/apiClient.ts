@@ -5,6 +5,5 @@ export default axios.create({
   headers: {
     "Content-type": "application/json"
   },
-  withCredentials: true,
-  validateStatus: status => status >= 200 && status < 500
+  withCredentials: true
 });

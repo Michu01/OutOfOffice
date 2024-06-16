@@ -2,22 +2,18 @@ import { Outlet } from "react-router-dom";
 import SignInIndex from "./signIn/Index";
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../services/apiClient";
-import { HttpStatusCode } from "axios";
 
 async function isSignedIn() {
-  const response = await apiClient.get("identity/isSignedIn");
-  return response.status == HttpStatusCode.Ok;
+  return await apiClient.get("identity/isSignedIn");
 };
 
 function AuthenticatedRoute() {
-  const { data: isAuthenticated } = useQuery({
+  const { isFetched, isError } = useQuery({
     queryKey: ["isSignedIn"],
     queryFn: isSignedIn
   });
 
-  if (isAuthenticated == undefined) {
-    return <></>;
-  }
+  const isAuthenticated = isFetched && !isError;
 
   if (isAuthenticated) {
     return <Outlet />;

@@ -1,21 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../services/apiClient";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { FaAngleRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+
+async function signIn(data: { fullName: string }) {
+  return await apiClient.post("identity/signIn", data);
+}
 
 function SignInIndex() {
-  const [error, setError] = useState<string>();
+  const navigate = useNavigate();
 
-  const signIn = async (data: { fullName: string }) => {
-    const result = await apiClient.post("identity/signIn", data);
-    if (result.data) {
-      setError(result.data);
-    }
-  }
-
-  const { mutate } = useMutation({
-    mutationFn: signIn
+  const { mutate, error, isError } = useMutation({
+    mutationFn: signIn,
+    onSuccess: () => navigate(0)
   });
+
+  const message = (error as AxiosError<string>)?.response?.data;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,10 +35,10 @@ function SignInIndex() {
             <h4 className="mb-3">Sign in</h4>
             <form onSubmit={handleSubmit}>
               <div className="form-floating mb-3">
-                <input type="text" className={`form-control ${error && 'is-invalid'}`} id="fullName" name="fullName" placeholder="Full name" required />
+                <input type="text" className={`form-control ${isError && 'is-invalid'}`} id="fullName" name="fullName" placeholder="Full name" required />
                 <label htmlFor="fullName">Full name</label>
                 <div className="invalid-feedback">
-                  {error}
+                  {message}
                 </div>
               </div>
               <div className="row justify-content-center">
