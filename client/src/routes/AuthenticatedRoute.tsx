@@ -2,20 +2,26 @@ import { Outlet } from "react-router-dom";
 import SignInIndex from "./signIn/Index";
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../services/apiClient";
+import { HttpStatusCode } from "axios";
 
 async function isSignedIn() {
-  return await apiClient.get("identity/isSignedIn");
+  const response = await apiClient.get("identity/isSignedIn", {
+    validateStatus: status => status == HttpStatusCode.Ok || status == HttpStatusCode.Unauthorized
+  });
+  return response.status == HttpStatusCode.Ok;
 };
 
 function AuthenticatedRoute() {
-  const { isFetched, isError } = useQuery({
+  const { data: isAuthorized, isLoading } = useQuery({
     queryKey: ["isSignedIn"],
     queryFn: isSignedIn
   });
 
-  const isAuthenticated = isFetched && !isError;
+  if (isLoading) {
+    return <></>;
+  }
 
-  if (isAuthenticated) {
+  if (isAuthorized) {
     return <Outlet />;
   }
 
