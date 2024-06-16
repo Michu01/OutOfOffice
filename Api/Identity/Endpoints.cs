@@ -17,6 +17,8 @@ public static class Endpoints
         group
             .MapPost("signOut", SignOut)
             .RequireAuthorization();
+        group.MapGet("isSignedIn", IsSignedIn)
+            .RequireAuthorization();
     }
 
     private static async Task<IResult> SignIn(IMediator mediator, HttpContext httpContext, string fullName)
@@ -34,6 +36,11 @@ public static class Endpoints
 
         await mediator.Send(request);
 
+        return Results.Ok();
+    }
+
+    private static IResult IsSignedIn()
+    {
         return Results.Ok();
     }
 }
