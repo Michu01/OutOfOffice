@@ -15,20 +15,26 @@ namespace Api.Employees.Queries;
 
 public enum Sort
 {
-    NameAsc, NameDesc, OutOfOfficeBalanceAsc, OutOfOfficeBalanceDesc 
+    FullNameAsc, 
+    FullNameDesc, 
+    OutOfOfficeBalanceAsc, 
+    OutOfOfficeBalanceDesc,
+    IdAsc,
+    IdDesc
 }
 
 public record GetEmployees(
     ClaimsPrincipal User,
     int Page = 1,
     int Limit = 30,
+    int? Id = null,
     string? FullName = null,
     string? Subdivision = null,
     EmployeePosition? Position = null,
     EmployeeStatus? Status = null,
     int? PeoplePartnerId = null,
     string? PeoplePartner = null,
-    Sort Sort = Sort.NameAsc) :
+    Sort Sort = Sort.FullNameAsc) :
     IRequest<PaginatedResult<Employee>>;
 
 public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetEmployees, PaginatedResult<Employee>>
@@ -71,6 +77,11 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
             .Include(e => e.PeoplePartner)
             .AsNoTracking();
 
+        if (request.Id is not null)
+        {
+            query = query.Where(e => e.Id == request.Id);
+        }
+
         if (!string.IsNullOrEmpty(request.FullName))
         {
             query = query.Where(e => e.FullName.Contains(request.FullName));
@@ -78,7 +89,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
 
         if (!string.IsNullOrEmpty(request.Subdivision))
         {
-            query = query.Where(e => e.Subdivision == request.Subdivision);
+            query = query.Where(e => e.Subdivision.Contains(request.Subdivision));
         }
 
         if (request.Position is not null)
@@ -103,10 +114,12 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
 
         query = request.Sort switch
         {
-            Sort.NameAsc => query.OrderBy(e => e.FullName),
-            Sort.NameDesc => query.OrderByDescending(e => e.FullName),
+            Sort.FullNameAsc => query.OrderBy(e => e.FullName),
+            Sort.FullNameDesc => query.OrderByDescending(e => e.FullName),
             Sort.OutOfOfficeBalanceAsc => query.OrderBy(e => e.OutOfOfficeBalance),
             Sort.OutOfOfficeBalanceDesc => query.OrderByDescending(e => e.OutOfOfficeBalance),
+            Sort.IdAsc => query.OrderBy(e => e.Id),
+            Sort.IdDesc => query.OrderByDescending(e => e.Id),
             _ => throw new NotImplementedException()
         };
 
