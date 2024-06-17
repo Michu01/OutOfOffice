@@ -1,5 +1,5 @@
 import { HiMiniBuildingOffice2 } from "react-icons/hi2";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
   const { pathname } = useLocation();
@@ -14,16 +14,16 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a className={`nav-link ${pathname == '/projects' && 'active'}`} href="#">Projects</a>
+              <Link className={`nav-link ${pathname == '/projects' && 'active'}`} to="projects">Projects</Link>
             </li>
             <li className="nav-item">
-              <a className={`nav-link ${pathname == '/employees' && 'active'}`} href="#">Employees</a>
+              <Link className={`nav-link ${pathname == '/employees' && 'active'}`} to="employees">Employees</Link>
             </li>
             <li className="nav-item">
-              <a className={`nav-link ${pathname == '/leaveRequests' && 'active'}`} href="#">Leave requests</a>
+              <Link className={`nav-link ${pathname == '/leaveRequests' && 'active'}`} to="leaveRequests">Leave requests</Link>
             </li>
             <li className="nav-item">
-              <a className={`nav-link ${pathname == '/approvalRequests' && 'active'}`} href="#">Approval requests</a>
+              <Link className={`nav-link ${pathname == '/approvalRequests' && 'active'}`} to="approvalRequests">Approval requests</Link>
             </li>
           </ul>
         </div>

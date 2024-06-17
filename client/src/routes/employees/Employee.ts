@@ -5,5 +5,5 @@ type Employee = {
   position: string;
   status: string;
   outOfOfficeBalance: number;
-  peoplePartner: Employee;
+  peoplePartner?: Employee;
 }
