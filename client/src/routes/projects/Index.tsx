@@ -2,6 +2,7 @@ import { ColumnFiltersState, PaginationState, SortingState, createColumnHelper }
 import useProjectsQuery from "./useProjectsQuery";
 import { useState } from "react";
 import Table from "../../components/Table";
+import { FaPlus } from "react-icons/fa";
 
 const columnHelper = createColumnHelper<Project>();
 
@@ -69,20 +70,27 @@ function ProjectsIndex() {
   const { data, isFetching } = useProjectsQuery(pagination, columnFilters, sorting);
 
   return (
-    <div className="d-flex container py-3 flex-grow-1">
-      <Table
-        data={data?.items}
-        rowCount={data?.totalCount}
-        columns={columns}
-        pagination={pagination}
-        columnFilters={columnFilters}
-        sorting={sorting}
-        isFetching={isFetching}
-        setPagination={setPagination}
-        setColumnFilters={setColumnFilters}
-        setSorting={setSorting}
-      />
-    </div>
+    <>
+      <div className="d-flex container py-3 flex-grow-1">
+        <Table
+          data={data?.items}
+          rowCount={data?.totalCount}
+          columns={columns}
+          pagination={pagination}
+          columnFilters={columnFilters}
+          sorting={sorting}
+          isFetching={isFetching}
+          setPagination={setPagination}
+          setColumnFilters={setColumnFilters}
+          setSorting={setSorting}
+        />
+      </div>
+      <div className="floating-action p-3">
+        <button type="button" className="btn btn-success fs-5 d-flex align-items-center">
+          <FaPlus /><span className="ms-2">Create project</span>
+        </button>
+      </div>
+    </>
   );
 }
 

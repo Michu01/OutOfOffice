@@ -35,3 +35,10 @@ th {
 .fs-8 {
   font-size: 0.8rem;
 }
+
+.floating-action {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+}
