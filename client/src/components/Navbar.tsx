@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { HiMiniBuildingOffice2 } from "react-icons/hi2";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import apiClient from "../services/apiClient";
+import EmployeeBriefComponent from "../routes/employees/EmployeeBriefComponent";
 
 async function signOut() {
   return await apiClient.post("identity/signOut");
@@ -41,8 +42,11 @@ function Navbar() {
               <Link className={`nav-link ${pathname == '/approvalRequests' && 'active'}`} to="approvalRequests">Approval requests</Link>
             </li>
           </ul>
-          <div className="d-flex">
-            <button className="btn btn-secondary my-2 my-sm-0" type="button" onClick={handleSignOutClick}>Sign out</button>
+          <div className="d-flex align-items-center">
+            <EmployeeBriefComponent className="me-3" />
+            <div>
+              <button className="btn btn-secondary my-2 my-sm-0" type="button" onClick={handleSignOutClick}>Sign out</button>
+            </div>
           </div>
         </div>
       </div>
