@@ -31,7 +31,7 @@ function SignInIndex() {
     <div className="container">
       <div className="row justify-content-center align-items-center vh-100">
         <div className="col-auto">
-          <div className="border rounded p-5 bg-white" style={{ minWidth: "400px" }}>
+          <div className="border rounded p-5 bg-white shadow-lg" style={{ minWidth: "400px" }}>
             <h4 className="mb-3">Sign in</h4>
             <form onSubmit={handleSubmit}>
               <div className="form-floating mb-3">
@@ -42,7 +42,7 @@ function SignInIndex() {
                 </div>
               </div>
               <div className="row justify-content-center">
-                <button className="btn btn-primary col-auto white d-flex align-items-center" type="submit">
+                <button className="btn btn-secondary col-auto white d-flex align-items-center" type="submit">
                   <span className="me-1">Sign in</span>
                   <FaAngleRight />
                 </button>

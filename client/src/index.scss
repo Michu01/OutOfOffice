@@ -1,7 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+$color-primary: #02AAB0;
+$color-secondary: #fc4a1a;
+
+$primary: $color-secondary;
+
+$pagination-focus-color: $color-primary;
+$pagination-color: $color-primary;
+$pagination-hover-color: $color-secondary;
+
+$component-active-color: white;
+$component-active-bg: $color-secondary;
+
 $theme-colors: (
-  "primary": #02AAB0
+  "primary": $color-primary,
+  "secondary": $color-secondary
 );
 
 @import "bootstrap";
@@ -25,18 +38,31 @@ body {
   background: linear-gradient(to right, #00CDAC, #02AAB0);
 }
 
-.btn-primary {
+#root {
+  min-height: 100vh;
+  display: flex;
+}
+
+.btn {
   color: white;
 }
 
-.btn-primary:hover {
+.btn:hover {
   color: white;
 }
 
-.btn-primary:active {
+.btn:active {
   color: white !important;
 }
 
-.btn-primary:focus {
+.btn:focus {
   color: white;
+}
+
+.bg-darken {
+  background-color: rgba(1.0, 1.0, 1.0, 0.3);
+}
+
+th {
+  vertical-align: middle;
 }
