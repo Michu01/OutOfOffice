@@ -1,6 +1,7 @@
 ﻿using Api.ApprovalRequests.Models;
 using Api.Employees.Models;
 using Api.LeaveRequests.Models;
+using Api.ProjectEmployee;
 using Api.Projects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ public interface IApplicationDbContext
     DbSet<LeaveRequestEntity> LeaveRequests { get; }
 
     DbSet<ProjectEntity> Projects { get; }
+
+    DbSet<ProjectEmployeeEntity> ProjectEmployee { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

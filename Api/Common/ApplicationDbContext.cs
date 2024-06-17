@@ -1,7 +1,9 @@
 ﻿using Api.ApprovalRequests.Models;
 using Api.Employees.Models;
 using Api.LeaveRequests.Models;
+using Api.ProjectEmployee;
 using Api.Projects.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Common;
@@ -16,9 +18,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public required DbSet<ProjectEntity> Projects { get; init; }
 
+    public required DbSet<ProjectEmployeeEntity> ProjectEmployee { get; init; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ProjectEntity>()
+            .HasMany(e => e.Employees)
+            .WithMany(e => e.Projects)
+            .UsingEntity<ProjectEmployeeEntity>();
 
         modelBuilder.Entity<ApprovalRequestEntity>()
             .HasOne(e => e.Approver)
@@ -43,5 +52,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasMany(e => e.Employees)
             .WithOne(e => e.PeoplePartner)
             .OnDelete(DeleteBehavior.NoAction);
+
+        DbInitializer.Seed(modelBuilder);
     }
 }
