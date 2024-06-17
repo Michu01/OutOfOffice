@@ -1,7 +1,7 @@
 import { Column, Header, HeaderGroup, flexRender } from "@tanstack/react-table";
 import { FaChevronCircleDown, FaChevronCircleUp, FaMinusCircle } from "react-icons/fa";
 import TableFilter from "./TableFilter";
-import styles from "../index.module.scss";
+import styles from "../styles/_variables.module.scss";
 import { IconContext } from "react-icons";
 
 function TableColumnSort({ column }: { column: Column<any, any> }) {

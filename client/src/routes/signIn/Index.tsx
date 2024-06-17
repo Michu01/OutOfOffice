@@ -42,7 +42,7 @@ function SignInIndex() {
                 </div>
               </div>
               <div className="row justify-content-center">
-                <button className="btn btn-secondary col-auto white d-flex align-items-center" type="submit">
+                <button className="btn btn-primary col-auto d-flex align-items-center" type="submit">
                   <span className="me-1">Sign in</span>
                   <FaAngleRight />
                 </button>
