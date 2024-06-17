@@ -1,5 +1,6 @@
 ﻿using Api.Common.Extensions;
 using Api.Identity.Commands;
+using Api.Identity.Queries;
 
 using MediatR;
 
@@ -13,11 +14,16 @@ public static class Endpoints
            .MapGroup("identity")
            .WithTags("Identity");
 
-        group.MapPost("signIn", SignIn);
+        group
+            .MapPost("signIn", SignIn);
         group
             .MapPost("signOut", SignOut)
             .RequireAuthorization();
-        group.MapGet("isSignedIn", IsSignedIn)
+        group
+            .MapGet("isSignedIn", IsSignedIn)
+            .RequireAuthorization();
+        group
+            .MapGet("me", GetMe)
             .RequireAuthorization();
     }
 
@@ -42,5 +48,12 @@ public static class Endpoints
     private static IResult IsSignedIn()
     {
         return Results.Ok();
+    }
+
+    private static async Task<IResult> GetMe(IMediator mediator, [AsParameters] GetMe request)
+    {
+        var result = await mediator.Send(request);
+
+        return result.MapToResponse();
     }
 }
