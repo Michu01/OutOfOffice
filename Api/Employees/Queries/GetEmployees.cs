@@ -42,7 +42,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
     public async Task<PaginatedResult<Employee>> Handle(GetEmployees request, CancellationToken cancellationToken)
     {
         var position = request.User.GetPosition();
-        var id = request.User.GetId();
+        var userId = request.User.GetId();
 
         IQueryable<EmployeeEntity> query;
 
@@ -55,7 +55,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
                 {
                     query = dbContext
                         .Employees
-                        .Where(e => e.PeoplePartnerId == id)
+                        .Where(e => e.Id == userId)
                         .SelectMany(e => e.Employees);
                     break;
                 }
@@ -64,7 +64,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
                 {
                     query = dbContext
                         .Projects
-                        .Where(e => e.ProjectManagerId == id)
+                        .Where(e => e.ProjectManagerId == userId)
                         .SelectMany(e => e.Employees);
                     break;
                 }
@@ -122,6 +122,8 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
             Sort.IdDesc => query.OrderByDescending(e => e.Id),
             _ => throw new NotImplementedException()
         };
+
+        var temp = await query.ToListAsync(cancellationToken);
 
         var result = await query
             .ProjectTo<Employee>(mapper.ConfigurationProvider)
