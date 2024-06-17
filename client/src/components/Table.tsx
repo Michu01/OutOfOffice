@@ -60,7 +60,7 @@ function Table(props: Props) {
       </div>
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="text-white">
-          { rowCount && <>Showing {table.getRowModel().rows.length.toLocaleString()} of {rowCount.toLocaleString()} rows</> }
+          { rowCount != undefined && <>Showing {table.getRowModel().rows.length.toLocaleString()} of {rowCount.toLocaleString()} rows</> }
         </div>
         <Paginator
           page={pagination.pageIndex}
