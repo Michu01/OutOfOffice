@@ -38,7 +38,8 @@ const columns = [
         { key: '', value: 'All' },
         { key: 'Administrator', value: 'Administrator' },
         { key: 'HRManager', value: 'HR Manager' },
-        { key: 'ProjectManager', value: 'Project Manager' }
+        { key: 'ProjectManager', value: 'Project Manager' },
+        { key: 'Employee', value: 'Employee' }
       ]
     }
   }),
