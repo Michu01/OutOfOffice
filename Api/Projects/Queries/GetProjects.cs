@@ -1,11 +1,11 @@
-﻿using System.Linq.Expressions;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using Api.Common;
 using Api.Common.Extensions;
 using Api.Employees.Enums;
 using Api.Projects.Enums;
 using Api.Projects.Models;
+
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
@@ -17,19 +17,27 @@ namespace Api.Projects.Queries;
 
 public enum Sort
 {
-    Newest, Oldest, Shortest, Longest
+    StartDateAsc, 
+    StartDateDesc,
+    EndDateAsc,
+    EndDateDesc,
+    IdAsc,
+    IdDesc,
+    NameAsc,
+    NameDesc
 }
 
 public record GetProjects(
     ClaimsPrincipal User,
     int Page = 1,
     int Limit = 30,
-    string? Status = null, 
+    int? Id = null,
+    string? Name = null,
     string? Type = null,
+    ProjectStatus? Status = null, 
     int? ProjectManagerId = null,
-    bool Active = false,
     bool Finished = false,
-    Sort Sort = Sort.Newest) : 
+    Sort Sort = Sort.StartDateDesc) : 
     IRequest<PaginatedResult<Project>>;
 
 public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetProjects, PaginatedResult<Project>>
@@ -37,7 +45,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
     public async Task<PaginatedResult<Project>> Handle(GetProjects request, CancellationToken cancellationToken)
     {
         var position = request.User.GetPosition();
-        var id = request.User.GetId();
+        var userId = request.User.GetId();
 
         IQueryable<ProjectEntity> query;
 
@@ -50,8 +58,9 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
                 {
                     query = dbContext
                         .Employees
-                        .Where(e => e.PeoplePartnerId == id)
-                        .SelectMany(e => e.Projects);
+                        .Where(e => e.PeoplePartnerId == userId)
+                        .SelectMany(e => e.Projects)
+                        .Distinct();
                     break;
                 }
 
@@ -59,7 +68,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
                 {
                     query = dbContext
                         .Employees
-                        .Where(e => e.Id == id)
+                        .Where(e => e.Id == userId)
                         .SelectMany(e => e.ManagedProjects);
                     break;
                 }
@@ -68,7 +77,7 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
                 {
                     query = dbContext
                         .Employees
-                        .Where(e => e.Id == id)
+                        .Where(e => e.Id == userId)
                         .SelectMany(e => e.Projects);
                     break;
                 }
@@ -81,9 +90,19 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
             .Include(e => e.ProjectManager)
             .AsNoTracking();
 
+        if (request.Id is not null)
+        {
+            query = query.Where(e => e.Id == request.Id);
+        }
+
+        if (!string.IsNullOrEmpty(request.Name))
+        {
+            query = query.Where(e => e.Name.Contains(request.Name));
+        }
+
         if (!string.IsNullOrEmpty(request.Type))
         {
-            query = query.Where(e => e.Type == request.Type);
+            query = query.Where(e => e.Type.Contains(request.Type));
         }
 
         if (request.ProjectManagerId is not null)
@@ -96,19 +115,21 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
             query = query.Where(e => e.EndDate != null);
         }
 
-        if (request.Active)
+        if (request.Status is not null)
         {
-            query = query.Where(e => e.Status == ProjectStatus.Active);
+            query = query.Where(e => e.Status == request.Status);
         }
-
-        Expression<Func<ProjectEntity, int?>> getDurationInDays = e => e.EndDate == null ? null : e.EndDate.Value.DayNumber - e.StartDate.DayNumber;
 
         query = request.Sort switch
         {
-            Sort.Shortest => query.OrderBy(getDurationInDays),
-            Sort.Longest => query.OrderByDescending(getDurationInDays),
-            Sort.Oldest => query.OrderBy(e => e.StartDate),
-            Sort.Newest => query.OrderByDescending(e => e.StartDate),
+            Sort.StartDateAsc => query.OrderBy(e => e.StartDate),
+            Sort.StartDateDesc => query.OrderByDescending(e => e.StartDate),
+            Sort.EndDateAsc => query.OrderBy(e => e.EndDate),
+            Sort.EndDateDesc => query.OrderByDescending(e => e.EndDate),
+            Sort.IdAsc => query.OrderBy(e => e.Id),
+            Sort.IdDesc => query.OrderByDescending(e => e.Id),
+            Sort.NameAsc => query.OrderBy(e => e.Name),
+            Sort.NameDesc => query.OrderByDescending(e => e.Name),
             _ => throw new NotImplementedException()
         };
 
