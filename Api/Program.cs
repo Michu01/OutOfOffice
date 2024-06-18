@@ -69,10 +69,10 @@ builder.Services.AddAuthorizationBuilder()
         .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
     .AddPolicy(nameof(Policy.ViewEmployees), policy => policy
         .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
-    .AddPolicy(nameof(Policy.ViewProjects), policy => policy
-        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
     .AddPolicy(nameof(Policy.ViewApprovalRequests), policy => policy
         .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager)))
+    .AddPolicy(nameof(Policy.ViewProjects), policy => policy
+        .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager), nameof(EmployeePosition.Employee)))
     .AddPolicy(nameof(Policy.ViewLeaveRequests), policy => policy
         .RequireRole(nameof(EmployeePosition.Administrator), nameof(EmployeePosition.ProjectManager), nameof(EmployeePosition.HRManager), nameof(EmployeePosition.Employee)));
 
