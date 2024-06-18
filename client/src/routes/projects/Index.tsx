@@ -1,8 +1,8 @@
-import { ColumnFiltersState, PaginationState, SortingState, createColumnHelper } from "@tanstack/react-table";
+import { ColumnFiltersState, DisplayColumnDef, PaginationState, SortingState, createColumnHelper } from "@tanstack/react-table";
 import useProjectsQuery from "./useProjectsQuery";
 import { useState } from "react";
 import Table from "../../components/Table";
-import { FaPlus } from "react-icons/fa";
+import { FaEdit, FaInfo, FaPlus } from "react-icons/fa";
 import EmployeeBriefComponent from "../employees/EmployeeBriefComponent";
 
 const columnHelper = createColumnHelper<Project>();
@@ -58,7 +58,15 @@ const columns = [
     header: "Project manager",
     enableColumnFilter: false,
     enableSorting: false,
-    cell: context => <EmployeeBriefComponent avatarSize={24} employee={context.getValue()} />
+    cell: context => <EmployeeBriefComponent avatarSize={36} employee={context.getValue()} />
+  }),
+  columnHelper.display({
+    header: "Details",
+    size: 0,
+    cell: _ =>
+      <button className="btn btn-warning d-flex align-items-center">
+        <FaEdit />
+      </button>
   })
 ];
 
