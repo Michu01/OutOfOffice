@@ -39,7 +39,7 @@ public class GetProjectHandler(IApplicationDbContext dbContext, IMapper mapper) 
 
         var hasAccess = position switch
         {
-            EmployeePosition.Employee => false,
+            EmployeePosition.Employee => entity.Employees.Any(e => e.Id == id),
             EmployeePosition.HRManager => entity.Employees.Any(e => e.PeoplePartnerId == id),
             EmployeePosition.ProjectManager => entity.ProjectManagerId == id,
             EmployeePosition.Administrator => true,
