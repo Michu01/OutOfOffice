@@ -1,24 +1,15 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { HiMiniBuildingOffice2 } from "react-icons/hi2";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import apiClient from "../services/apiClient";
+import { Link, useLocation } from "react-router-dom";
 import EmployeeBriefComponent from "../routes/employees/EmployeeBriefComponent";
-
-async function signOut() {
-  return await apiClient.post("identity/signOut");
-}
+import useMeQuery from "../hooks/useMeQuery";
+import useSignOutMutation from "../hooks/useSignOutMutation";
 
 function Navbar() {
   const { pathname } = useLocation();
 
-  const navigate = useNavigate();
+  const { data: employee } = useMeQuery();
 
-  const { mutate } = useMutation({
-    mutationFn: signOut,
-    onSuccess: () => navigate(0)
-  });
-
-  const handleSignOutClick = () => mutate();
+  const { mutate: signOut } = useSignOutMutation();
 
   return (
     <nav className="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -43,15 +34,15 @@ function Navbar() {
             </li>
           </ul>
           <div className="d-flex align-items-center">
-            <EmployeeBriefComponent className="me-3" />
+            {employee && <EmployeeBriefComponent className="text-white me-3" showPosition employee={employee} avatarSize={48} />}
             <div>
-              <button className="btn btn-secondary my-2 my-sm-0" type="button" onClick={handleSignOutClick}>Sign out</button>
+              <button className="btn btn-secondary my-2 my-sm-0" type="button" onClick={_ => signOut()}>Sign out</button>
             </div>
           </div>
         </div>
       </div>
     </nav>
-  )
+  );
 }
 
 export default Navbar;

@@ -2,6 +2,7 @@ import { ColumnFiltersState, PaginationState, SortingState, createColumnHelper }
 import useEmployeesQuery from "./useEmployeesQuery";
 import { useState } from "react";
 import Table from "../../components/Table";
+import EmployeeBriefComponent from "./EmployeeBriefComponent";
 
 const columnHelper = createColumnHelper<Employee>();
 
@@ -59,10 +60,14 @@ const columns = [
     header: "Balance",
     enableColumnFilter: false
   }),
-  columnHelper.accessor('peoplePartner.fullName', {
+  columnHelper.accessor('peoplePartner', {
     header: "People partner",
     enableSorting: false,
-    enableColumnFilter: false
+    enableColumnFilter: false,
+    cell: context => {
+      const employee = context.getValue();
+      return employee ? <EmployeeBriefComponent avatarSize={24} employee={employee} /> : "-"
+    }  
   })
 ];
 

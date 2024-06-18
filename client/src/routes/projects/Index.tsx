@@ -3,6 +3,7 @@ import useProjectsQuery from "./useProjectsQuery";
 import { useState } from "react";
 import Table from "../../components/Table";
 import { FaPlus } from "react-icons/fa";
+import EmployeeBriefComponent from "../employees/EmployeeBriefComponent";
 
 const columnHelper = createColumnHelper<Project>();
 
@@ -38,7 +39,8 @@ const columns = [
   columnHelper.accessor('endDate', {
     header: "End date",
     enableColumnFilter: false,
-    sortDescFirst: true
+    sortDescFirst: true,
+    cell: context => context.getValue() ? context.renderValue() : "-"
   }),
   columnHelper.accessor('status', {
     header: "Status",
@@ -52,10 +54,11 @@ const columns = [
     },
     enableSorting: false
   }),
-  columnHelper.accessor('projectManager.fullName', {
+  columnHelper.accessor('projectManager', {
     header: "Project manager",
     enableColumnFilter: false,
-    enableSorting: false
+    enableSorting: false,
+    cell: context => <EmployeeBriefComponent avatarSize={24} employee={context.getValue()} />
   })
 ];
 
