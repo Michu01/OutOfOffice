@@ -1,9 +1,11 @@
-import { ColumnFiltersState, DisplayColumnDef, PaginationState, SortingState, createColumnHelper } from "@tanstack/react-table";
-import useProjectsQuery from "./useProjectsQuery";
+import { PaginationState, ColumnFiltersState, SortingState, createColumnHelper } from "@tanstack/react-table";
 import { useState } from "react";
-import Table from "../../components/Table";
-import { FaEdit, FaInfo, FaPlus } from "react-icons/fa";
-import EmployeeBriefComponent from "../employees/EmployeeBriefComponent";
+import Table from "../../../components/Table";
+import useProjectsQuery from "../hooks/useProjectsQuery";
+import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import AvatarSize from "../../../constants/AvatarSize";
+import EmployeeBriefComponent from "../../employees/EmployeeBriefComponent";
 
 const columnHelper = createColumnHelper<Project>();
 
@@ -58,19 +60,19 @@ const columns = [
     header: "Project manager",
     enableColumnFilter: false,
     enableSorting: false,
-    cell: context => <EmployeeBriefComponent avatarSize={36} employee={context.getValue()} />
+    cell: context => <EmployeeBriefComponent avatarSize={AvatarSize.Small} employee={context.getValue()} />
   }),
   columnHelper.display({
     header: "Details",
     size: 0,
-    cell: _ =>
-      <button className="btn btn-warning d-flex align-items-center">
+    cell: context =>
+      <Link className="btn btn-warning" to={context.row.original.id.toString()}>
         <FaEdit />
-      </button>
+      </Link>
   })
 ];
 
-function ProjectsIndex() {
+function ProjectsTable() {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10
@@ -81,28 +83,19 @@ function ProjectsIndex() {
   const { data, isFetching } = useProjectsQuery(pagination, columnFilters, sorting);
 
   return (
-    <>
-      <div className="d-flex container py-3 flex-grow-1">
-        <Table
-          data={data?.items}
-          rowCount={data?.totalCount}
-          columns={columns}
-          pagination={pagination}
-          columnFilters={columnFilters}
-          sorting={sorting}
-          isFetching={isFetching}
-          setPagination={setPagination}
-          setColumnFilters={setColumnFilters}
-          setSorting={setSorting}
-        />
-      </div>
-      <div className="floating-action p-3">
-        <button type="button" className="btn btn-success fs-5 d-flex align-items-center">
-          <FaPlus /><span className="ms-2">Create project</span>
-        </button>
-      </div>
-    </>
+    <Table
+      data={data?.items}
+      rowCount={data?.totalCount}
+      columns={columns}
+      pagination={pagination}
+      columnFilters={columnFilters}
+      sorting={sorting}
+      isFetching={isFetching}
+      setPagination={setPagination}
+      setColumnFilters={setColumnFilters}
+      setSorting={setSorting}
+    />
   );
 }
 
-export default ProjectsIndex;
+export default ProjectsTable;

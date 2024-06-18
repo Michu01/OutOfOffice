@@ -1,21 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
-import apiClient from "../../services/apiClient";
 import { FormEvent } from "react";
 import { FaAngleRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-
-async function signIn(data: { fullName: string }) {
-  return await apiClient.post("identity/signIn", data);
-}
+import useSignInMutation from "./useSignInMutation";
+import { useNavigate } from "react-router-dom";
 
 function SignInIndex() {
   const navigate = useNavigate();
 
-  const { mutate, error, isError } = useMutation({
-    mutationFn: signIn,
-    onSuccess: () => navigate(0)
-  });
+  const { mutate, error, isError, isSuccess } = useSignInMutation();
+
+  if (isSuccess) {
+    navigate(0);
+  }
 
   const message = (error as AxiosError<string>)?.response?.data;
 
@@ -42,7 +38,7 @@ function SignInIndex() {
                 </div>
               </div>
               <div className="row justify-content-center">
-                <button className="btn btn-primary col-auto d-flex align-items-center" type="submit">
+                <button className="btn btn-primary col-auto d-flex align-items-center fs-6" type="submit">
                   <span className="me-1">Sign in</span>
                   <FaAngleRight />
                 </button>

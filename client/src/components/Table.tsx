@@ -4,6 +4,7 @@ import TableHead from "./TableHead";
 import TablePageSizeSelect from "./TablePageSizeSelect";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import Paginator from "./Paginator";
+import Spinner from "./Spinner";
 
 type Props = {
   data: any[] | undefined;
@@ -43,24 +44,19 @@ function Table(props: Props) {
   });
 
   return (
-    <div className="d-flex flex-column flex-grow-1">
-      <div className="flex-grow-1 position-relative rounded overflow-hidden bg-white overflow-x-auto mb-3">
-        <table className="table mb-0">
-          <TableHead headerGroups={table.getHeaderGroups()} />
-          <TableBody rowModel={table.getRowModel()} />
-        </table>
-        {
-          isFetching &&
-          <div className="position-absolute top-0 w-100 h-100 d-flex justify-content-center align-items-center">
-            <div className="spinner-border text-primary border-5" style={{ width: "5rem", height: "5rem" }} role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        }
+    <>
+      <div className="d-flex flex-grow-1 rounded position-relative bg-white mb-3 p-1">
+        <div className="table-responsive flex-grow-1">
+          <table className="table mb-0">
+            <TableHead headerGroups={table.getHeaderGroups()} />
+            <TableBody rowModel={table.getRowModel()} />
+          </table>
+          { isFetching && <Spinner /> }
+        </div>
       </div>
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="text-white">
-          { rowCount != undefined && <>Showing {table.getRowModel().rows.length.toLocaleString()} of {rowCount.toLocaleString()} rows</> }
+          {rowCount != undefined && <>Showing {table.getRowModel().rows.length.toLocaleString()} of {rowCount.toLocaleString()} rows</>}
         </div>
         <Paginator
           page={pagination.pageIndex}
@@ -70,7 +66,7 @@ function Table(props: Props) {
         />
         <TablePageSizeSelect pageSize={pagination.pageSize} setPageSize={e => setPagination({ pageIndex: 0, pageSize: e })} />
       </div>
-    </div>
+    </>
   );
 }
 

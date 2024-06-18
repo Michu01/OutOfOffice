@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import EmployeeBriefComponent from "../routes/employees/EmployeeBriefComponent";
 import useMeQuery from "../hooks/useMeQuery";
 import useSignOutMutation from "../hooks/useSignOutMutation";
+import AvatarSize from "../constants/AvatarSize";
 
 function Navbar() {
   const { pathname } = useLocation();
@@ -34,7 +35,7 @@ function Navbar() {
             </li>
           </ul>
           <div className="d-flex align-items-center">
-            {employee && <EmployeeBriefComponent className="text-white me-3" showPosition employee={employee} avatarSize={48} />}
+            {employee && <EmployeeBriefComponent className="text-white me-3" showPosition employee={employee} avatarSize={AvatarSize.Normal} />}
             <div>
               <button className="btn btn-secondary my-2 my-sm-0" type="button" onClick={_ => signOut()}>Sign out</button>
             </div>

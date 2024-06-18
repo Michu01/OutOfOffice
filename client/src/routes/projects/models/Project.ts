@@ -7,4 +7,5 @@ type Project = {
   comment?: string;
   status: string;
   projectManager: Employee;
+  employees: Employee[];
 }

@@ -3,6 +3,8 @@ import useEmployeesQuery from "./useEmployeesQuery";
 import { useState } from "react";
 import Table from "../../components/Table";
 import EmployeeBriefComponent from "./EmployeeBriefComponent";
+import AvatarSize from "../../constants/AvatarSize";
+import Scaffold from "../../components/Scaffold";
 
 const columnHelper = createColumnHelper<Employee>();
 
@@ -66,8 +68,8 @@ const columns = [
     enableColumnFilter: false,
     cell: context => {
       const employee = context.getValue();
-      return employee ? <EmployeeBriefComponent avatarSize={24} employee={employee} /> : "-"
-    }  
+      return employee ? <EmployeeBriefComponent avatarSize={AvatarSize.Small} employee={employee} /> : "-"
+    }
   })
 ];
 
@@ -82,7 +84,7 @@ function EmployeesIndex() {
   const { data, isFetching } = useEmployeesQuery(pagination, columnFilters, sorting);
 
   return (
-    <div className="d-flex container py-3 flex-grow-1">
+    <Scaffold>
       <Table
         data={data?.items}
         rowCount={data?.totalCount}
@@ -95,7 +97,7 @@ function EmployeesIndex() {
         setColumnFilters={setColumnFilters}
         setSorting={setSorting}
       />
-    </div>
+    </Scaffold>
   );
 }
 

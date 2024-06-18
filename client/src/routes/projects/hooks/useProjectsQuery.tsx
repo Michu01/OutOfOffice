@@ -1,8 +1,8 @@
 import { UseQueryResult, keepPreviousData, useQuery } from "@tanstack/react-query";
-import apiClient from "../../services/apiClient";
-import PaginatedResult from "../../models/PaginatedResult";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
-import "../../utility/string";
+import "../../../utility/string";
+import PaginatedResult from "../../../models/PaginatedResult";
+import apiClient from "../../../services/apiClient";
 
 function useProjectsQuery(pagination: PaginationState, columnFilters: ColumnFiltersState, sorting: SortingState): UseQueryResult<PaginatedResult<Project>> {
   const getSort = (sorting: SortingState) => {
