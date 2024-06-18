@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import "src/common/styles/variables";
+@import "bootstrap";
+@import "src/common/styles/bootswatch";
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: $body-color;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+th {
+  vertical-align: middle;
+}
+
+td {
+  vertical-align: middle;
+}
+
+.fs-7 {
+  font-size: 1rem;
+}
+
+.fs-8 {
+  font-size: 0.8rem;
+}
+
+.floating-action {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+}
+
+$spinner-size: 5rem;
+
+.spinner-border {
+  width: $spinner-size;
+  height: $spinner-size;
+  position: absolute;
+  top: calc(50% - ($spinner-size / 2));
+  right: calc(50% - ($spinner-size / 2));
+}

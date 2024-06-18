@@ -1,11 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import AuthenticatedRoute from "./routes/AuthenticatedRoute"
-import ProjectsIndex from "./routes/projects/routes/Index"
-import NavbarRoute from "./routes/NavbarRoute"
-import EmployeesIndex from "./routes/employees/Index";
-import ProjectCreate from "./routes/projects/routes/Create";
-import ProjectDetails from "./routes/projects/routes/Details";
-import ProjectUpdate from "./routes/projects/routes/Update";
+import AuthenticatedRoute from "src/common/routes/AuthenticatedRoute"
+import ProjectsIndex from "src/projects/routes/Index"
+import NavbarRoute from "src/common/routes/NavbarRoute"
+import EmployeesIndex from "src/employees/Index";
+import ProjectCreate from "src/projects/routes/Create";
+import ProjectDetails from "src/projects/routes/Details";
+import ProjectUpdate from "src/projects/routes/Update";
 
 function App() {
   return (
