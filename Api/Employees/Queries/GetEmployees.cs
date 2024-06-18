@@ -34,10 +34,11 @@ public record GetEmployees(
     EmployeeStatus? Status = null,
     int? PeoplePartnerId = null,
     string? PeoplePartner = null,
+    bool GetAll = false,
     Sort Sort = Sort.FullNameAsc) :
     IRequest<PaginatedResult<Employee>>;
 
-public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetEmployees, PaginatedResult<Employee>>
+public class GetEmployeesHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetEmployees, PaginatedResult<Employee>>
 {
     public async Task<PaginatedResult<Employee>> Handle(GetEmployees request, CancellationToken cancellationToken)
     {
@@ -62,10 +63,13 @@ public class GetProjectsHandler(IApplicationDbContext dbContext, IMapper mapper)
 
             case EmployeePosition.ProjectManager:
                 {
-                    query = dbContext
-                        .Projects
-                        .Where(e => e.ProjectManagerId == userId)
-                        .SelectMany(e => e.Employees);
+                    query = request.GetAll
+                        ? dbContext.Employees
+                        : dbContext
+                            .Projects
+                            .Where(e => e.ProjectManagerId == userId)
+                            .SelectMany(e => e.Employees);
+
                     break;
                 }
 
