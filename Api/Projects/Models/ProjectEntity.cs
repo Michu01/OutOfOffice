@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Api.Employees.Models;
+using Api.ProjectEmployee;
 using Api.Projects.Enums;
 
 namespace Api.Projects.Models;
@@ -28,4 +29,6 @@ public class ProjectEntity
     public required ProjectStatus Status { get; set; }
 
     public virtual ICollection<EmployeeEntity> Employees { get; set; } = [];
+
+    public virtual ICollection<ProjectEmployeeEntity> ProjectsEmployees { get; set; } = [];
 }

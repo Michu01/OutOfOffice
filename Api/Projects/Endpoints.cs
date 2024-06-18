@@ -27,7 +27,11 @@ public static class Endpoints
             .RequireAuthorization(nameof(Policy.ViewProjects));
 
         group
-            .MapPost(string.Empty, PostProject)
+            .MapPost(string.Empty, AddProject)
+            .RequireAuthorization(nameof(Policy.ManageProjects));
+
+        group
+            .MapPut("{id}", UpdateProject)
             .RequireAuthorization(nameof(Policy.ManageProjects));
     }
 
@@ -45,17 +49,31 @@ public static class Endpoints
         return result.MapToResponse();
     }
 
-    private static async Task<IResult> PostProject(IMediator mediator, IValidator<CreateProject> validator, CreateProject project)
+    private static async Task<IResult> AddProject(IMediator mediator, IValidator<CreateProject> validator, [AsParameters] AddProject request)
     {
-        var validationResult = await validator.ValidateAsync(project);
+        var validationResult = await validator.ValidateAsync(request.Project);
 
         if (!validationResult.IsValid)
         {
             return validationResult.ToResponse();
         }
 
-        var result = await mediator.Send(new AddProject(project));
+        var result = await mediator.Send(request);
 
         return Results.Ok(result);
+    }
+
+    private static async Task<IResult> UpdateProject(IMediator mediator, IValidator<CreateProject> validator, [AsParameters] UpdateProject request)
+    {
+        var validationResult = await validator.ValidateAsync(request.Project);
+
+        if (!validationResult.IsValid)
+        {
+            return validationResult.ToResponse();
+        }
+
+        var result = await mediator.Send(request);
+
+        return result.MapToResponse();
     }
 }

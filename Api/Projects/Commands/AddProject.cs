@@ -1,23 +1,32 @@
-﻿using Api.Common;
+﻿using System.Security.Claims;
+
+using Api.Common;
+using Api.Common.Extensions;
+using Api.ProjectEmployee;
 using Api.Projects.Models;
+
 using AutoMapper;
 
 using MediatR;
 
 namespace Api.Projects.Commands;
 
-public record AddProject(CreateProject Project) : IRequest<ProjectEntity>;
+public record AddProject(ClaimsPrincipal User, CreateProject Project) : IRequest<ProjectBrief>;
 
-public class AddProjectHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<AddProject, ProjectEntity>
+public class AddProjectHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<AddProject, ProjectBrief>
 {
-    public async Task<ProjectEntity> Handle(AddProject request, CancellationToken cancellationToken)
+    public async Task<ProjectBrief> Handle(AddProject request, CancellationToken cancellationToken)
     {
-        var entity = mapper.Map<ProjectEntity>(request.Project);
+        var userId = request.User.GetId();
+
+        var entity = mapper.Map<ProjectEntity>(
+            request.Project,
+            opts => opts.Items[nameof(ProjectEntity.ProjectManagerId)] = userId);
 
         dbContext.Projects.Add(entity);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return entity;
+        return mapper.Map<ProjectBrief>(entity);
     }
 }
