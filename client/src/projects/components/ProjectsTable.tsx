@@ -5,7 +5,7 @@ import useProjectsQuery from "src/projects/hooks/useProjectsQuery";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AvatarSize from "src/common/constants/AvatarSize";
-import EmployeeBriefComponent from "src/employees/EmployeeBriefComponent";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 
 const columnHelper = createColumnHelper<Project>();
 

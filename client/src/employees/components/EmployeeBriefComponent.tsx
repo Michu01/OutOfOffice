@@ -1,4 +1,4 @@
-import EmployeeAvatar from "src/employees/EmployeeAvatar";
+import EmployeeAvatar from "src/employees/components/EmployeeAvatar";
 
 type Props = {
   employee: Employee;

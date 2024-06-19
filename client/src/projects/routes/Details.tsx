@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import AvatarSize from "src/common/constants/AvatarSize";
-import EmployeeBriefComponent from "src/employees/EmployeeBriefComponent";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import useProjectQuery from "src/projects/hooks/useProjectQuery";
 import useMeQuery from "src/common/hooks/useMeQuery";
 import { canManageProjects } from "src/common/utility/policies";

@@ -1,6 +1,6 @@
 import { FieldError, SubmitHandler, useForm } from "react-hook-form";
 import FormError from "src/common/components/FormError";
-import EmployeeFormInputs from "src/employees/EmployeeFormInputs";
+import EmployeeFormInputs from "src/employees/models/EmployeeFormInputs";
 import { Link } from "react-router-dom";
 import { createMaxLengthRule, createNonNegativeRule, requiredRule } from "src/common/utility/validationRules";
 import FormAction from "src/common/types/FormAction";

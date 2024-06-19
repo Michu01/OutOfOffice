@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "src/common/services/apiClient";
-import EmployeeFormInputs from "src/employees/EmployeeFormInputs";
+import EmployeeFormInputs from "src/employees/models/EmployeeFormInputs";
 
 function useAddEmployeeMutation() {
   const queryClient = useQueryClient();

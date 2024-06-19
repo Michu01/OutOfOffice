@@ -1,6 +1,6 @@
 import { HiMiniBuildingOffice2 } from "react-icons/hi2";
 import { Link, useLocation } from "react-router-dom";
-import EmployeeBriefComponent from "src/employees/EmployeeBriefComponent";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import useMeQuery from "src/common/hooks/useMeQuery";
 import useSignOutMutation from "src/common/hooks/useSignOutMutation";
 import AvatarSize from "src/common/constants/AvatarSize";

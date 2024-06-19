@@ -2,13 +2,13 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import AuthenticatedRoute from "src/common/routes/AuthenticatedRoute"
 import ProjectsIndex from "src/projects/routes/Index"
 import NavbarRoute from "src/common/routes/NavbarRoute"
-import EmployeesIndex from "src/employees/Index";
+import EmployeesIndex from "src/employees/routes/Index";
 import ProjectCreate from "src/projects/routes/Create";
 import ProjectDetails from "src/projects/routes/Details";
 import ProjectUpdate from "src/projects/routes/Update";
-import EmployeeDetails from "src/employees/Details";
-import EmployeeAdd from "src/employees/Add";
-import EmployeeUpdate from "src/employees/Update";
+import EmployeeDetails from "src/employees/routes/Details";
+import EmployeeAdd from "src/employees/routes/Add";
+import EmployeeUpdate from "src/employees/routes/Update";
 
 function App() {
   return (

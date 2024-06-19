@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import AvatarSize from "src/common/constants/AvatarSize";
-import EmployeeBriefComponent from "src/employees/EmployeeBriefComponent";
-import useEmployeeQuery from "src/employees/useEmployeeQuery";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
+import useEmployeeQuery from "src/employees/hooks/useEmployeeQuery";
 import useMeQuery from "src/common/hooks/useMeQuery";
 import { canManageEmployees } from "src/common/utility/policies";
 import Scaffold from "src/common/components/Scaffold";
-import EmployeeAvatar from "src/employees/EmployeeAvatar";
+import EmployeeAvatar from "src/employees/components/EmployeeAvatar";
 
 function EmployeeDetails() {
   const { id } = useParams();

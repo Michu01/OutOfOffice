@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Scaffold from "src/common/components/Scaffold";
-import useEmployeeQuery from "src/employees/useEmployeeQuery";
-import EmployeeForm from "src/employees/EmployeeForm";
-import EmployeeFormInputs from "src/employees/EmployeeFormInputs";
-import useUpdateEmployeeMutation from "src/employees/useUpdateEmployeeMutation";
+import useEmployeeQuery from "src/employees/hooks/useEmployeeQuery";
+import EmployeeForm from "src/employees/components/EmployeeForm";
+import EmployeeFormInputs from "src/employees/models/EmployeeFormInputs";
+import useUpdateEmployeeMutation from "src/employees/hooks/useUpdateEmployeeMutation";
 
 function EmployeeUpdate() {
   const { id } = useParams();

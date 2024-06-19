@@ -1,6 +1,6 @@
-import useEmployeesQuery from "src/employees/useEmployeesQuery";
+import useEmployeesQuery from "src/employees/hooks/useEmployeesQuery";
 import { useState } from "react";
-import EmployeeBriefComponent from "src/employees/EmployeeBriefComponent";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import AvatarSize from "src/common/constants/AvatarSize";
 import DebouncedSelect from "src/common/components/DebouncedSelect";
 

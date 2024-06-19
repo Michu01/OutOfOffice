@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import EmployeeForm from "src/employees/EmployeeForm";
-import EmployeeFormInputs from "src/employees/EmployeeFormInputs";
-import useAddEmployeeMutation from "src/employees/useAddEmployeeMutation";
+import EmployeeForm from "src/employees/components/EmployeeForm";
+import EmployeeFormInputs from "src/employees/models/EmployeeFormInputs";
+import useAddEmployeeMutation from "src/employees/hooks/useAddEmployeeMutation";
 import Scaffold from "src/common/components/Scaffold";
 
 function EmployeeAdd() {

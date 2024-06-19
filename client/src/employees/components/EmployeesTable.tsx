@@ -4,8 +4,8 @@ import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Table from "src/common/components/Table";
 import AvatarSize from "src/common/constants/AvatarSize";
-import EmployeeBriefComponent from "src/employees/EmployeeBriefComponent";
-import useEmployeesQuery from "src/employees/useEmployeesQuery";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
+import useEmployeesQuery from "src/employees/hooks/useEmployeesQuery";
 
 const columnHelper = createColumnHelper<Employee>();
 
