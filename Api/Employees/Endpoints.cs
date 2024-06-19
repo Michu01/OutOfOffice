@@ -3,6 +3,7 @@ using Api.Employees.Commands;
 using Api.Employees.Models;
 using Api.Employees.Queries;
 using Api.Identity;
+using Api.Projects.Commands;
 
 using FluentValidation;
 
@@ -27,7 +28,11 @@ public static class Endpoints
             .RequireAuthorization(nameof(Policy.ViewEmployees));
 
         group
-            .MapPost(string.Empty, PostEmployee)
+            .MapPost(string.Empty, AddEmployee)
+            .RequireAuthorization(nameof(Policy.ManageEmployees));
+
+        group
+            .MapPut("{id}", UpdateEmployee)
             .RequireAuthorization(nameof(Policy.ManageEmployees));
     }
 
@@ -45,17 +50,31 @@ public static class Endpoints
         return result.MapToResponse();
     }
 
-    private static async Task<IResult> PostEmployee(IMediator mediator, IValidator<CreateEmployee> validator, CreateEmployee employee)
+    private static async Task<IResult> AddEmployee(IMediator mediator, IValidator<CreateEmployee> validator, [AsParameters] AddEmployee request)
     {
-        var validationResult = await validator.ValidateAsync(employee);
+        var validationResult = await validator.ValidateAsync(request.Employee);
 
         if (!validationResult.IsValid)
         {
             return validationResult.ToResponse();
         }
 
-        var result = await mediator.Send(new AddEmployee(employee));
+        var result = await mediator.Send(request);
 
         return Results.Ok(result);
+    }
+
+    private static async Task<IResult> UpdateEmployee(IMediator mediator, IValidator<CreateEmployee> validator, [AsParameters] UpdateEmployee request)
+    {
+        var validationResult = await validator.ValidateAsync(request.Employee);
+
+        if (!validationResult.IsValid)
+        {
+            return validationResult.ToResponse();
+        }
+
+        var result = await mediator.Send(request);
+
+        return result.MapToResponse();
     }
 }
