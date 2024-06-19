@@ -6,6 +6,7 @@ import EmployeesIndex from "src/employees/Index";
 import ProjectCreate from "src/projects/routes/Create";
 import ProjectDetails from "src/projects/routes/Details";
 import ProjectUpdate from "src/projects/routes/Update";
+import EmployeeDetails from "./employees/Details";
 
 function App() {
   return (
@@ -20,7 +21,10 @@ function App() {
               <Route path=":id" element={<ProjectDetails />} />
               <Route path=":id/update" element={<ProjectUpdate />} />
             </Route>
-            <Route path="employees" element={<EmployeesIndex />} />
+            <Route path="employees">
+              <Route path="" element={<EmployeesIndex />} />
+              <Route path=":id" element={<EmployeeDetails />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

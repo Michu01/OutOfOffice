@@ -6,4 +6,6 @@ type Employee = {
   status: string;
   outOfOfficeBalance: number;
   peoplePartner?: Employee;
+  projects: Project[];
+  leaveRequests: LeaveRequest[];
 }

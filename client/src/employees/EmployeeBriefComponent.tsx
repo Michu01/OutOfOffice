@@ -1,3 +1,5 @@
+import EmployeeAvatar from "src/employees/EmployeeAvatar";
+
 type Props = {
   employee: Employee;
   avatarSize: number;
@@ -10,7 +12,7 @@ function EmployeeBriefComponent(props: Props) {
 
   return (
     <div className={`d-flex flex-row align-items-center text-nowrap ${className}`}>
-      <img className="me-1" height={avatarSize} width={avatarSize} src="https://avatar.iran.liara.run/public" />
+      <EmployeeAvatar className="me-1" size={avatarSize} /> 
       <div>
         <div className="fs-7">{employee.fullName}</div>
         {showPosition && <div className="fs-8">{employee.position}</div>}
