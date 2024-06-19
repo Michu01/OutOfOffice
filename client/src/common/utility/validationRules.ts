@@ -12,7 +12,15 @@ function createMaxLengthRule(maxLength: number): ValidationRule<number> {
   }
 }
 
+function createNonNegativeRule(): ValidationRule<number> {
+  return {
+    value: 0,
+    message: `Field must be non-negative`
+  }
+}
+
 export {
   requiredRule,
-  createMaxLengthRule
+  createMaxLengthRule,
+  createNonNegativeRule
 }

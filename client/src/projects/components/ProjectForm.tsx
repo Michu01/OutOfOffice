@@ -8,11 +8,10 @@ import { useState } from "react";
 import ProjectFormInputs from "src/projects/models/ProjectFormInputs";
 import { Link } from "react-router-dom";
 import { createMaxLengthRule, requiredRule } from "src/common/utility/validationRules";
-
-type Action = "create" | "update";
+import FormAction from "src/common/types/FormAction";
 
 type Props = {
-  action: Action;
+  action: FormAction;
   project?: Project;
   onSubmit: SubmitHandler<ProjectFormInputs>;
 }
