@@ -9,6 +9,7 @@ import useLeaveRequestUpdateCommentMutation from "src/leaveRequests/hooks/useLea
 import useLeaveRequestCancelMutation from "src/leaveRequests/hooks/useLeaveRequestCancelMutation";
 import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import AvatarSize from "src/common/constants/AvatarSize";
+import CollapseButton from "src/common/components/CollapseButton";
 
 function LeaveRequestDetails() {
   const { id } = useParams();
@@ -96,14 +97,14 @@ function LeaveRequestDetails() {
               </>
             }
             <div className="mb-3">
-              Approval requests
+              Approval requests <CollapseButton target="#approvalRequests" />
             </div>
             {
               leaveRequest.approvalRequests.length == 0 ?
                 <div className="mb-3 fs-7">
                   No approval requests found
                 </div> :
-                <div className="mb-3 vstack gap-3">
+                <div id="approvalRequests" className="mb-3 collapse vstack gap-3">
                   {leaveRequest.approvalRequests.map(e => <ApprovalRequestBriefComponent key={e.id} approvalRequest={e} />)}
                 </div>
             }

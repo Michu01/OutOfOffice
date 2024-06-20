@@ -5,6 +5,7 @@ import useProjectQuery from "src/projects/hooks/useProjectQuery";
 import useMeQuery from "src/common/hooks/useMeQuery";
 import { canManageProjects } from "src/common/utility/policies";
 import Scaffold from "src/common/components/Scaffold";
+import CollapseButton from "src/common/components/CollapseButton";
 
 function ProjectDetails() {
   const { id } = useParams();
@@ -19,13 +20,10 @@ function ProjectDetails() {
         {
           project &&
           <>
+            <h4 className="mb-3">{project.name}</h4>
             <div className="form-floating mb-3">
-              <input className="form-control" id="name" placeholder="Project name" defaultValue={project.name} readOnly />
-              <label htmlFor="name">Project name</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input className="form-control" id="type" type="text" placeholder="Project type" defaultValue={project.type} readOnly />
-              <label htmlFor="type">Project type</label>
+              <input className="form-control" id="type" type="text" placeholder="Type" defaultValue={project.type} readOnly />
+              <label htmlFor="type">Type</label>
             </div>
             <div className="row mb-3">
               <label className="col-2 col-form-label" htmlFor="startDate">Start date</label>
@@ -40,7 +38,7 @@ function ProjectDetails() {
             </div>
             <div className="form-floating mb-3">
               <input className="form-control" id="status" type="text" defaultValue={project.status} readOnly />
-              <label htmlFor="status">Project status</label>
+              <label htmlFor="status">Status</label>
             </div>
             <div className="form-floating mb-3">
               <textarea className="form-control" id="comment" placeholder="Comment" defaultValue={project.comment} readOnly />
@@ -50,17 +48,19 @@ function ProjectDetails() {
               Project manager
             </div>
             <div className="mb-3">
-              <EmployeeBriefComponent className="border rounded-5" employee={project.projectManager} avatarSize={AvatarSize.Normal} />
+              <EmployeeBriefComponent employee={project.projectManager} avatarSize={AvatarSize.Large} />
             </div>
             <div className="mb-3">
-              Employees
+              Employees <CollapseButton target="#employees" />
             </div>
             {
               project.employees.length == 0 ?
                 <div className="mb-3 fs-7">
                   No employees found
                 </div> :
-                project.employees.map(e => <EmployeeBriefComponent key={e.id} className="mb-3 border rounded-5 me-auto" avatarSize={AvatarSize.Normal} employee={e} />)
+                <div id="employees" className="collapse mb-3 vstack gap-3">
+                  {project.employees.map(e => <EmployeeBriefComponent key={e.id} avatarSize={AvatarSize.Normal} employee={e} />)}
+                </div>
             }
           </>
         }
