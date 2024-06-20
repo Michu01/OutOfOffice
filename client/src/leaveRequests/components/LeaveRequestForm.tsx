@@ -31,7 +31,7 @@ function LeaveRequestForm(props: Props) {
   }
 
   const validateEndDate = (value: string | null, formValues: LeaveRequestFormInputs) =>
-     (value == null || value == "" || value >= formValues.startDate) || "End date must be greater than or equal to start date";
+     (value != null && value >= formValues.startDate) || "End date must be greater than or equal to start date";
 
   return (
     <form onSubmit={handleSubmit(beforeSubmit)}>
@@ -57,7 +57,7 @@ function LeaveRequestForm(props: Props) {
         <div className="col-3">
           <input
             className={`form-control${getValidationClass(errors.endDate)}`} id="endDate" type="date"
-            {...register("endDate", { validate: validateEndDate })}
+            {...register("endDate", { required: requiredRule, validate: validateEndDate })}
           />
           <FormError error={errors.endDate} />
         </div>
