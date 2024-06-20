@@ -35,6 +35,7 @@ function LeaveRequestForm(props: Props) {
 
   return (
     <form onSubmit={handleSubmit(beforeSubmit)}>
+      <h4 className="mb-3">Leave request</h4>
       <div className="form-floating mb-3">
         <input
           className={`form-control${getValidationClass(errors.absenceReason)}`} id="absenceReason" type="text" placeholder="Absence reason"

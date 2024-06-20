@@ -3,6 +3,7 @@ import { useState } from "react";
 import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import AvatarSize from "src/common/constants/AvatarSize";
 import DebouncedSelect from "src/common/components/DebouncedSelect";
+import Employee from "src/employees/models/Employee";
 
 type Props = {
   onChange: (employee: Employee) => void;

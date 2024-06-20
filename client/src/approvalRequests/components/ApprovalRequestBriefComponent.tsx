@@ -6,7 +6,7 @@ import ApprovalRequestStatusBadge from "src/approvalRequests/components/Approval
 function ApprovalRequestBriefComponent({ approvalRequest }: { approvalRequest: ApprovalRequest }) {
   return (
     <div className="d-flex flex-row align-items-center gap-3">
-      <EmployeeBriefComponent avatarSize={AvatarSize.Large} employee={approvalRequest.approver}/>
+      <EmployeeBriefComponent avatarSize={AvatarSize.Normal} employee={approvalRequest.approver}/>
       <ApprovalRequestStatusBadge status={approvalRequest.status} />
     </div>
   );

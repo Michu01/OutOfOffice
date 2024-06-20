@@ -9,6 +9,7 @@ import ProjectFormInputs from "src/projects/models/ProjectFormInputs";
 import { Link } from "react-router-dom";
 import { createMaxLengthRule, requiredRule } from "src/common/utility/validationRules";
 import FormAction from "src/common/types/FormAction";
+import Employee from "src/employees/models/Employee";
 
 type Props = {
   action: FormAction;
@@ -69,21 +70,22 @@ function ProjectForm(props: Props) {
 
   return (
     <form onSubmit={handleSubmit(beforeSubmit)}>
+      <h4 className="mb-3">Project</h4>
       {action == "update" && <input type="hidden" defaultValue={project!.id} />}
       <div className="form-floating mb-3">
         <input
-          className={`form-control${getValidationClass(errors.name)}`} id="name" type="text" placeholder="Project name"
+          className={`form-control${getValidationClass(errors.name)}`} id="name" type="text" placeholder="Name"
           {...register("name", { required: requiredRule, maxLength: createMaxLengthRule(64) })}
         />
-        <label htmlFor="name">Project name</label>
+        <label htmlFor="name">Name</label>
         <FormError error={errors.name} />
       </div>
       <div className="form-floating mb-3">
         <input
-          className={`form-control${getValidationClass(errors.type)}`} id="type" type="text" placeholder="Project type"
+          className={`form-control${getValidationClass(errors.type)}`} id="type" type="text" placeholder="Type"
           {...register("type", { required: requiredRule, maxLength: createMaxLengthRule(32) })}
         />
-        <label htmlFor="type">Project type</label>
+        <label htmlFor="type">Type</label>
         <FormError error={errors.type} />
       </div>
       <div className="row mb-3">
@@ -124,10 +126,10 @@ function ProjectForm(props: Props) {
         <EmployeeSelect onChange={addEmployee} />
       </div>
       {employees.map((e, i) =>
-        <div key={e.id} className="mb-3 border rounded-5 d-flex">
+        <div key={e.id} className="mb-3 d-flex">
           <input type="hidden" {...register(`employeeIds.${i}`, { value: e.id })} />
           <EmployeeBriefComponent className="me-auto" avatarSize={AvatarSize.Normal} employee={e} />
-          <button className="btn btn-danger" type="button" onClick={() => removeEmployee(e)}>
+          <button className="btn btn-danger rounded-5" type="button" onClick={() => removeEmployee(e)}>
             <FaXmark />
           </button>
         </div>

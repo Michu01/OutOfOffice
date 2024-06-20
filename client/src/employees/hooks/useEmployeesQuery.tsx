@@ -3,6 +3,7 @@ import apiClient from "src/common/services/apiClient";
 import PaginatedResult from "src/common/models/PaginatedResult";
 import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/react-table";
 import "src/common/utility/string";
+import Employee from "src/employees/models/Employee";
 
 function useEmployeesQuery(pagination: PaginationState, columnFilters: ColumnFiltersState, sorting: SortingState): UseQueryResult<PaginatedResult<Employee>> {
   const getSort = (sorting: SortingState) => {

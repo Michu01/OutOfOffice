@@ -4,6 +4,7 @@ import EmployeeFormInputs from "src/employees/models/EmployeeFormInputs";
 import { Link } from "react-router-dom";
 import { createMaxLengthRule, createNonNegativeRule, requiredRule } from "src/common/utility/validationRules";
 import FormAction from "src/common/types/FormAction";
+import Employee from "src/employees/models/Employee";
 
 type Props = {
   action: FormAction;
@@ -39,6 +40,7 @@ function EmployeeForm(props: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {action == "update" && <input type="hidden" defaultValue={employee!.id} />}
+      <h4 className="mb-3">Employee</h4>
       <div className="form-floating mb-3">
         <input
           className={`form-control${getValidationClass(errors.fullName)}`} id="fullName" type="text" placeholder="Full name"
