@@ -56,7 +56,7 @@ function EmployeeDetails() {
                   Projects <CollapseButton target="#projects" />
                 </div>
                 <div id="projects" className="mb-3 collapse vstack gap-3 fs-7">
-                  {employee.projects.map(e => <span key={e.id}>{e.name}</span>)}
+                  {employee.projects.length == 0 ? "No projects found" : employee.projects.map(e => <span key={e.id}>{e.name}</span>)}
                 </div>
               </>
             }
@@ -67,7 +67,7 @@ function EmployeeDetails() {
                   Managed projects <CollapseButton target="#managedProjects" />
                 </div>
                 <div id="managedProjects" className="mb-3 collapse vstack gap-3 fs-7">
-                  {employee.managedProjects.map(e => <span key={e.id}>{e.name}</span>)}
+                  {employee.managedProjects.length == 0 ? "No projects found" : employee.managedProjects.map(e => <span key={e.id}>{e.name}</span>)}
                 </div>
               </>
             }
@@ -78,7 +78,7 @@ function EmployeeDetails() {
                   Managed employees <CollapseButton target="#managedEmployees" />
                 </div>
                 <div id="managedEmployees" className="mb-3 collapse vstack gap-3 fs-7">
-                  {employee.employees.map(e => <span key={e.id}>{e.fullName}</span>)}
+                  {employee.employees.length == 0 ? "No employees found" : employee.employees.map(e => <span key={e.id}>{e.fullName}</span>)}
                 </div>
               </>
             }
