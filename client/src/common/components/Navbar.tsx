@@ -4,7 +4,7 @@ import EmployeeBriefComponent from "src/employees/components/EmployeeBriefCompon
 import useMeQuery from "src/common/hooks/useMeQuery";
 import useSignOutMutation from "src/common/hooks/useSignOutMutation";
 import AvatarSize from "src/common/constants/AvatarSize";
-import { canViewEmployees } from "src/common/utility/policies";
+import { canViewApprovalRequests, canViewEmployees } from "src/common/utility/policies";
 
 function Navbar() {
   const { pathname } = useLocation();
@@ -34,9 +34,12 @@ function Navbar() {
             <li className="nav-item">
               <Link className={`nav-link ${pathname == '/leaveRequests' && 'active'}`} to="leaveRequests">Leave requests</Link>
             </li>
-            <li className="nav-item">
-              <Link className={`nav-link ${pathname == '/approvalRequests' && 'active'}`} to="approvalRequests">Approval requests</Link>
-            </li>
+            {
+              canViewApprovalRequests(me) &&
+              <li className="nav-item">
+                <Link className={`nav-link ${pathname == '/approvalRequests' && 'active'}`} to="approvalRequests">Approval requests</Link>
+              </li>
+            }
           </ul>
           <div className="d-flex align-items-center">
             {me && <EmployeeBriefComponent className="text-white me-3" showPosition employee={me} avatarSize={AvatarSize.Normal} />}

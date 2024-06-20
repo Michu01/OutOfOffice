@@ -18,10 +18,15 @@ function canManageApprovalRequests(employee: Employee | undefined) {
   return employee != undefined && employee.position != "Employee";
 }
 
+function canViewApprovalRequests(employee: Employee | undefined) {
+  return employee != undefined && employee.position != "Employee";
+}
+
 export { 
   canManageProjects,
   canManageEmployees,
   canMakeLeaveRequests,
   canViewEmployees,
-  canManageApprovalRequests
+  canManageApprovalRequests,
+  canViewApprovalRequests
 }
