@@ -3,6 +3,7 @@ import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/rea
 import "src/common/utility/string";
 import PaginatedResult from "src/common/models/PaginatedResult";
 import apiClient from "src/common/services/apiClient";
+import LeaveRequest from "src/leaveRequests/models/LeaveRequest";
 
 function useLeaveRequestsQuery(pagination: PaginationState, columnFilters: ColumnFiltersState, sorting: SortingState): UseQueryResult<PaginatedResult<LeaveRequest>> {
   const getSort = (sorting: SortingState) => {

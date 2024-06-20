@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import AvatarSize from "src/common/constants/AvatarSize";
 import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import LeaveRequestStatusBadge from "src/leaveRequests/components/LeaveRequestStatusBadge";
+import LeaveRequest from "src/leaveRequests/models/LeaveRequest";
 
 const columnHelper = createColumnHelper<LeaveRequest>();
 
