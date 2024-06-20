@@ -68,14 +68,14 @@ public static class Endpoints
         return result.MapToResponse();
     }
 
-    private record UpdateCommentRequest(string? Comment);
+    private record UpdateLeaveRequestCommentRequest(string? Comment);
 
     private static async Task<IResult> UpdateComment(
         IMediator mediator, 
         IValidator<UpdateLeaveRequestComment> validator, 
         ClaimsPrincipal user,
         int id,
-        UpdateCommentRequest comment)
+        UpdateLeaveRequestCommentRequest comment)
     {
         var request = new UpdateLeaveRequestComment(user, id, comment.Comment);
 
