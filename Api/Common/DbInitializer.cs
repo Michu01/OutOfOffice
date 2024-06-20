@@ -203,7 +203,7 @@ public static class DbInitializer
         IList<ProjectEntity> projects,
         IList<EmployeeEntity> employees)
     {
-        var assignableStatuses = new[] { ApprovalRequestStatus.Canceled, ApprovalRequestStatus.Rejected, ApprovalRequestStatus.New };
+        var assignableStatuses = new[] { ApprovalRequestStatus.Approved, ApprovalRequestStatus.Rejected, ApprovalRequestStatus.New };
 
         var approvalRequests = new List<ApprovalRequestEntity>();
 
