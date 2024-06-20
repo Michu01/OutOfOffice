@@ -6,10 +6,16 @@ import Table from "src/common/components/Table";
 import AvatarSize from "src/common/constants/AvatarSize";
 import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
 import useEmployeesQuery from "src/employees/hooks/useEmployeesQuery";
+import EmployeeAvatar from "./EmployeeAvatar";
 
 const columnHelper = createColumnHelper<Employee>();
 
 const columns = [
+  columnHelper.display({
+    id: "avatar",
+    size: 0,
+    cell: context => <EmployeeAvatar employeeId={context.row.original.id} size={AvatarSize.Small} />
+  }),
   columnHelper.accessor('id', {
     header: "Id",
     meta: {
