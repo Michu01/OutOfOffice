@@ -3,6 +3,7 @@
 using Api.Common;
 using Api.Common.Extensions;
 using Api.Employees.Enums;
+using Api.LeaveRequests.Enums;
 using Api.LeaveRequests.Models;
 
 using AutoMapper;
@@ -14,10 +15,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.ApprovalRequests.Queries;
 
+public enum Sort
+{
+    StartDateAsc,
+    StartDateDesc,
+    EndDateAsc,
+    EndDateDesc,
+    IdAsc,
+    IdDesc
+}
+
 public record GetLeaveRequests(
     ClaimsPrincipal User,
     int Page = 1,
-    int Limit = 30) :
+    int Limit = 30,
+    string? AbsenceReason = null,
+    LeaveRequestStatus? Status = null,
+    Sort Sort = Sort.StartDateDesc) :
     IRequest<PaginatedResult<LeaveRequest>>;
 
 public class GetLeaveRequestsHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<GetLeaveRequests, PaginatedResult<LeaveRequest>>
@@ -70,8 +84,28 @@ public class GetLeaveRequestsHandler(IApplicationDbContext dbContext, IMapper ma
             .Include(e => e.Employee)
             .AsNoTracking();
 
+        if (request.Status is not null)
+        {
+            query = query.Where(e => e.Status == request.Status);
+        }
+
+        if (!string.IsNullOrEmpty(request.AbsenceReason))
+        {
+            query = query.Where(e => e.AbsenceReason.Contains(request.AbsenceReason));
+        }
+
+        query = request.Sort switch
+        {
+            Sort.StartDateAsc => query.OrderBy(e => e.StartDate),
+            Sort.StartDateDesc => query.OrderByDescending(e => e.StartDate),
+            Sort.EndDateAsc => query.OrderBy(e => e.EndDate),
+            Sort.EndDateDesc => query.OrderByDescending(e => e.EndDate),
+            Sort.IdAsc => query.OrderBy(e => e.Id),
+            Sort.IdDesc => query.OrderByDescending(e => e.Id),
+            _ => throw new NotImplementedException(),
+        };
+
         var result = await query
-            .OrderBy(e => e.Id)
             .ProjectTo<LeaveRequest>(mapper.ConfigurationProvider)
             .ToPaginatedResult(request.Page, request.Limit, cancellationToken);
 

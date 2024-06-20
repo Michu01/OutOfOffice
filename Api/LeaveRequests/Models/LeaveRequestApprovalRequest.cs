@@ -1,4 +1,5 @@
-﻿using Api.Employees.Models;
+﻿using Api.ApprovalRequests.Enums;
+using Api.Employees.Models;
 
 namespace Api.LeaveRequests.Models;
 
@@ -8,7 +9,7 @@ public record LeaveRequestApprovalRequest
 
     public required EmployeeBrief Approver { get; init; }
 
-    public required string Status { get; init; }
+    public required ApprovalRequestStatus Status { get; init; }
 
     public string? Comment { get; init; }
 }

@@ -1,5 +1,5 @@
-﻿using Api.ApprovalRequests.Models;
-using Api.Employees.Models;
+﻿using Api.Employees.Models;
+using Api.LeaveRequests.Enums;
 
 namespace Api.LeaveRequests.Models;
 
@@ -11,13 +11,13 @@ public record LeaveRequestDetails
 
     public required string AbsenceReason { get; init; }
 
-    public DateTime StartDate { get; init; }
+    public DateOnly StartDate { get; init; }
 
-    public DateTime EndDate { get; init; }
+    public DateOnly EndDate { get; init; }
 
     public string? Comment { get; init; }
 
-    public required string Status { get; init; }
+    public LeaveRequestStatus Status { get; init; }
 
     public required ICollection<LeaveRequestApprovalRequest> ApprovalRequests { get; init; }
 }
