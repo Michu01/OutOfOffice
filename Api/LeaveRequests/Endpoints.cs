@@ -1,9 +1,12 @@
-﻿using Api.ApprovalRequests.Commands;
+﻿using System.Security.Claims;
+
 using Api.ApprovalRequests.Queries;
 using Api.Common.Extensions;
 using Api.Identity;
 using Api.LeaveRequests.Commands;
 using Api.LeaveRequests.Queries;
+
+using FluentValidation;
 
 using MediatR;
 
@@ -32,6 +35,10 @@ public static class Endpoints
         group
             .MapPut("{id}/cancel", CancelLeaveRequest)
             .RequireAuthorization(nameof(Policy.ManageLeaveRequests));
+
+        group
+            .MapPut("{id}/updateComment", UpdateComment)
+            .RequireAuthorization(nameof(Policy.ManageLeaveRequests));
     }
 
     private static async Task<IResult> GetLeaveRequests(IMediator mediator, [AsParameters] GetLeaveRequests request)
@@ -57,6 +64,29 @@ public static class Endpoints
 
     private static async Task<IResult> CancelLeaveRequest(IMediator mediator, [AsParameters] CancelLeaveRequest request)
     {
+        var result = await mediator.Send(request);
+
+        return result.MapToResponse();
+    }
+
+    private record UpdateCommentRequest(string? Comment);
+
+    private static async Task<IResult> UpdateComment(
+        IMediator mediator, 
+        IValidator<UpdateLeaveRequestComment> validator, 
+        ClaimsPrincipal user,
+        int id,
+        UpdateCommentRequest comment)
+    {
+        var request = new UpdateLeaveRequestComment(user, id, comment.Comment);
+
+        var validationResult = await validator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return validationResult.ToResponse();
+        }
+
         var result = await mediator.Send(request);
 
         return result.MapToResponse();

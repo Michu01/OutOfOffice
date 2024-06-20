@@ -37,6 +37,11 @@ public class CancelLeaveRequestHandler(IApplicationDbContext dbContext) : IReque
             return Result.Fail(new ForbiddenResult());
         }
 
+        if (leaveRequest.Status != LeaveRequestStatus.Submitted)
+        {
+            return Result.Fail(new BadRequestResult($"Can't cancel {leaveRequest.Status.ToString().ToLower()} leave request"));
+        }
+
         leaveRequest.Status = LeaveRequestStatus.Canceled;
 
         foreach (var approvalRequest in leaveRequest.ApprovalRequests)

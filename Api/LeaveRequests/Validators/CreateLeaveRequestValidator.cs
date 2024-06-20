@@ -1,8 +1,7 @@
 ﻿using Api.LeaveRequests.Models;
-
 using FluentValidation;
 
-namespace Api.LeaveRequests;
+namespace Api.LeaveRequests.Validators;
 
 public class CreateLeaveRequestValidator : AbstractValidator<CreateLeaveRequest>
 {
