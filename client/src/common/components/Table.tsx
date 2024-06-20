@@ -1,28 +1,35 @@
-import { ColumnFiltersState, PaginationState, SortingState, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Dispatch, SetStateAction, useMemo } from "react";
+import { UseQueryResult } from "@tanstack/react-query";
+import { ColumnFiltersState, ColumnSort, PaginationState, SortingState, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 import Paginator from "src/common/components/Paginator";
 import Spinner from "src/common/components/Spinner";
 import TableBody from "src/common/components/TableBody";
 import TableHead from "src/common/components/TableHead";
 import TablePageSizeSelect from "src/common/components/TablePageSizeSelect";
+import PaginatedResult from "src/common/models/PaginatedResult";
+import useLocalStorageState from "use-local-storage-state";
 
 type Props = {
-  data: any[] | undefined;
-  rowCount: number | undefined;
   columns: any[];
-  pagination: PaginationState;
-  columnFilters: ColumnFiltersState;
-  sorting: SortingState;
-  isFetching: boolean;
-  setSorting: Dispatch<SetStateAction<SortingState>>;
-  setColumnFilters: Dispatch<SetStateAction<ColumnFiltersState>>;
-  setPagination: Dispatch<SetStateAction<PaginationState>>;
+  initialColumnSort: ColumnSort;
+  useDataQuery: (pagination: PaginationState, columnFilters: ColumnFiltersState, sorting: SortingState) => UseQueryResult<PaginatedResult<any>>
 }
 
 function Table(props: Props) {
-  const { pagination, columnFilters, sorting, rowCount, isFetching, setSorting, setColumnFilters, setPagination } = props;
+  const { initialColumnSort, useDataQuery } = props;
 
-  const data = useMemo(() => props.data ?? [], [props.data]);
+  const [pageSize, setPageSize] = useLocalStorageState("pageSize", { defaultValue: 20 });
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize
+  });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([initialColumnSort]);
+
+  const { data: paginatedResult, isFetching } = useDataQuery(pagination, columnFilters, sorting);
+
+  const data = useMemo(() => paginatedResult?.items ?? [], [paginatedResult]);
   const columns = useMemo(() => props.columns, [props.columns]);
 
   const table = useReactTable({
@@ -33,10 +40,12 @@ function Table(props: Props) {
       columnFilters,
       sorting
     },
+    enableSortingRemoval: false,
     manualPagination: true,
     manualSorting: true,
     manualFiltering: true,
-    rowCount,
+    enableMultiSort: false,
+    rowCount: paginatedResult?.totalCount,
     onSortingChange: setSorting,
     onColumnFiltersChange: e => {
       setPagination({ ...pagination, pageIndex: 0 });
@@ -45,6 +54,10 @@ function Table(props: Props) {
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel()
   });
+
+  useEffect(() => {
+    setPageSize(pagination.pageSize);
+  }, [pagination]);
 
   return (
     <>
@@ -57,18 +70,19 @@ function Table(props: Props) {
           { isFetching && <Spinner /> }
         </div>
       </div>
-      <div className="d-flex justify-content-between align-items-center gap-3">
+      <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
         <div className="text-white">
-          {rowCount != undefined && <>Showing {table.getRowModel().rows.length.toLocaleString()} of {rowCount.toLocaleString()} rows</>}
+          {paginatedResult != undefined && <>Showing {table.getRowModel().rows.length.toLocaleString()} of {paginatedResult.totalCount.toLocaleString()} rows</>}
         </div>
         <Paginator
           page={pagination.pageIndex}
           pageSize={pagination.pageSize}
-          rowCount={rowCount}
+          rowCount={paginatedResult?.totalCount}
           setPage={e => setPagination({ ...pagination, pageIndex: e })}
         />
         <TablePageSizeSelect pageSize={pagination.pageSize} setPageSize={e => setPagination({ pageIndex: 0, pageSize: e })} />
       </div>
+      <div className="d-block d-xxl-none" style={{ height: 64 }} />
     </>
   );
 }

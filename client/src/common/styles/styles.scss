@@ -25,7 +25,7 @@ body {
 }
 
 th {
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 td {
@@ -55,4 +55,12 @@ $spinner-size: 5rem;
   position: absolute;
   top: calc(50% - ($spinner-size / 2));
   right: calc(50% - ($spinner-size / 2));
+}
+
+span[aria-expanded=false] .expand-up {
+  display: none;
+}
+
+span[aria-expanded=true] .expand-down {
+  display: none;
 }
