@@ -13,6 +13,7 @@ import LeaveRequestsIndex from "src/leaveRequests/routes/Index";
 import LeaveRequestDetails from "src/leaveRequests/routes/Details";
 import LeaveRequestMake from "src/leaveRequests/routes/Make";
 import ApprovalRequestsIndex from "src/approvalRequests/routes/Index";
+import ApprovalRequestDetails from "src/approvalRequests/routes/Details";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             </Route>
             <Route path="approvalRequests">
               <Route path="" element={<ApprovalRequestsIndex />} />
+              <Route path=":id" element={<ApprovalRequestDetails />} />
             </Route>
           </Route>
         </Route>
