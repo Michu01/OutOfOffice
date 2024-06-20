@@ -9,6 +9,7 @@ import ProjectUpdate from "src/projects/routes/Update";
 import EmployeeDetails from "src/employees/routes/Details";
 import EmployeeAdd from "src/employees/routes/Add";
 import EmployeeUpdate from "src/employees/routes/Update";
+import LeaveRequestsIndex from "src/leaveRequests/routes/Index";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
               <Route path="add" element={<EmployeeAdd />} />
               <Route path=":id" element={<EmployeeDetails />} />
               <Route path=":id/update" element={<EmployeeUpdate />} />
+            </Route>
+            <Route path="leaveRequests">
+              <Route path="" element={<LeaveRequestsIndex />} />
             </Route>
           </Route>
         </Route>
