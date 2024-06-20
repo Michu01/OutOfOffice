@@ -11,6 +11,7 @@ import EmployeeAdd from "src/employees/routes/Add";
 import EmployeeUpdate from "src/employees/routes/Update";
 import LeaveRequestsIndex from "src/leaveRequests/routes/Index";
 import LeaveRequestDetails from "src/leaveRequests/routes/Details";
+import LeaveRequestMake from "src/leaveRequests/routes/Make";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             </Route>
             <Route path="leaveRequests">
               <Route path="" element={<LeaveRequestsIndex />} />
+              <Route path="make" element={<LeaveRequestMake />} />
               <Route path=":id" element={<LeaveRequestDetails />} />
             </Route>
           </Route>
