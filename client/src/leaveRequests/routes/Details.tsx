@@ -7,6 +7,8 @@ import ApprovalRequestBriefComponent from "src/approvalRequests/components/Appro
 import { useEffect, useState } from "react";
 import useLeaveRequestUpdateCommentMutation from "src/leaveRequests/hooks/useLeaveRequestUpdateCommentMutation";
 import useLeaveRequestCancelMutation from "src/leaveRequests/hooks/useLeaveRequestCancelMutation";
+import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
+import AvatarSize from "src/common/constants/AvatarSize";
 
 function LeaveRequestDetails() {
   const { id } = useParams();
@@ -82,6 +84,17 @@ function LeaveRequestDetails() {
               }
               <label htmlFor="comment">Comment</label>
             </div>
+            {
+              me?.position != "Employee" &&
+              <>
+                <div className="mb-3">
+                  Employee
+                </div>
+                <div className="mb-3">
+                  <EmployeeBriefComponent avatarSize={AvatarSize.Large} employee={leaveRequest.employee} />
+                </div>
+              </>
+            }
             <div className="mb-3">
               Approval requests
             </div>
