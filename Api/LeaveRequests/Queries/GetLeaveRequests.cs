@@ -13,7 +13,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.ApprovalRequests.Queries;
+namespace Api.LeaveRequests.Queries;
 
 public enum Sort
 {

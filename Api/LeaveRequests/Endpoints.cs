@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 
-using Api.ApprovalRequests.Queries;
 using Api.Common.Extensions;
 using Api.Identity;
 using Api.LeaveRequests.Commands;
