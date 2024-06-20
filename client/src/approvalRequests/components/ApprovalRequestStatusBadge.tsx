@@ -2,7 +2,7 @@ function ApprovalRequestStatusBadge({ status }: { status: string }) {
   const type = (() => {
     switch (status) {
       case "Rejected": return "danger";
-      case "Accepted": return "success";
+      case "Approved": return "success";
       case "Canceled": return "warning";
       case "New": return "primary"
     }
