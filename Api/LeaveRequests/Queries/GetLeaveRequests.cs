@@ -29,6 +29,7 @@ public record GetLeaveRequests(
     ClaimsPrincipal User,
     int Page = 1,
     int Limit = 30,
+    int? Id = null,
     string? AbsenceReason = null,
     LeaveRequestStatus? Status = null,
     Sort Sort = Sort.StartDateDesc) :
@@ -83,6 +84,11 @@ public class GetLeaveRequestsHandler(IApplicationDbContext dbContext, IMapper ma
         query = query
             .Include(e => e.Employee)
             .AsNoTracking();
+
+        if (request.Id is not null)
+        {
+            query = query.Where(e => e.Id == request.Id);
+        }
 
         if (request.Status is not null)
         {

@@ -29,6 +29,7 @@ public record GetApprovalRequests(
     ClaimsPrincipal User,
     int Page = 1,
     int Limit = 30,
+    int? Id = null,
     string? AbsenceReason = null,
     ApprovalRequestStatus? Status = null,
     Sort Sort = Sort.StartDateDesc) : 
@@ -65,6 +66,11 @@ public class GetApprovalRequestsHandler(IApplicationDbContext dbContext, IMapper
             .Include(e => e.Approver)
             .Include(e => e.LeaveRequest)
             .AsNoTracking();
+
+        if (request.Id is not null)
+        {
+            query = query.Where(e => e.Id == request.Id);
+        }
 
         if (request.Status is not null)
         {
