@@ -19,9 +19,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.LeaveRequests.Commands;
 
-public record SubmitLeaveRequest(ClaimsPrincipal User, CreateLeaveRequest LeaveRequest) : IRequest<Result>;
+public record SubmitLeaveRequest(ClaimsPrincipal User, CreateLeaveRequest LeaveRequest) : IRequest<Result<LeaveRequestBrief>>;
 
-public class SubmitLeaveRequestHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<SubmitLeaveRequest, Result>
+public class SubmitLeaveRequestHandler(IApplicationDbContext dbContext, IMapper mapper) : IRequestHandler<SubmitLeaveRequest, Result<LeaveRequestBrief>>
 {
     private async Task AddLeaveRequest(LeaveRequestEntity leaveRequest, EmployeeEntity employee, CancellationToken cancellationToken)
     {
@@ -46,7 +46,7 @@ public class SubmitLeaveRequestHandler(IApplicationDbContext dbContext, IMapper 
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Result> Handle(SubmitLeaveRequest request, CancellationToken cancellationToken)
+    public async Task<Result<LeaveRequestBrief>> Handle(SubmitLeaveRequest request, CancellationToken cancellationToken)
     {
         var userId = request.User.GetId();
 
@@ -76,6 +76,6 @@ public class SubmitLeaveRequestHandler(IApplicationDbContext dbContext, IMapper 
 
         await AddLeaveRequest(leaveRequest, employee, cancellationToken);
 
-        return Result.Ok();
+        return mapper.Map<LeaveRequestBrief>(leaveRequest);
     }
 }
