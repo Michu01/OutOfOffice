@@ -15,36 +15,38 @@ function Paginator(props: Props) {
   const handlePageClick = (selectedItem: { selected: number }) => {
     setPage(selectedItem.selected);
   }
-  
+
   if (pageCount == 0) {
     return <></>;
   }
 
   return (
-    <ReactPaginate
-      containerClassName="pagination mb-0"
-      nextClassName="page-item"
-      previousClassName="page-item"
-      pageClassName="page-item"
-      breakClassName="page-item"
-      activeClassName="active"
-      disabledClassName="disabled"
-      disabledLinkClassName="page-link"
-      nextLinkClassName="page-link"
-      previousLinkClassName="page-link"
-      pageLinkClassName="page-link"
-      breakLinkClassName="page-link"
-      activeLinkClassName="active"
-      breakLabel="..."
-      nextLabel=">"
-      previousLabel="<"
-      forcePage={page}
-      onPageChange={handlePageClick}
-      pageRangeDisplayed={5}
-      marginPagesDisplayed={3}
-      pageCount={pageCount}
-      renderOnZeroPageCount={null}
-    />
+    <div className="overflow-x-auto">
+      <ReactPaginate
+        containerClassName="pagination mb-0"
+        nextClassName="page-item"
+        previousClassName="page-item"
+        pageClassName="page-item"
+        breakClassName="page-item"
+        activeClassName="active"
+        disabledClassName="disabled"
+        disabledLinkClassName="page-link"
+        nextLinkClassName="page-link"
+        previousLinkClassName="page-link"
+        pageLinkClassName="page-link"
+        breakLinkClassName="page-link"
+        activeLinkClassName="active"
+        breakLabel="..."
+        nextLabel=">"
+        previousLabel="<"
+        forcePage={page}
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        marginPagesDisplayed={3}
+        pageCount={pageCount}
+        renderOnZeroPageCount={null}
+      />
+    </div>
   );
 }
 
