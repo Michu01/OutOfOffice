@@ -23,7 +23,7 @@ function Table(props: Props) {
   const { pagination, columnFilters, sorting, rowCount, isFetching, setSorting, setColumnFilters, setPagination } = props;
 
   const data = useMemo(() => props.data ?? [], [props.data]);
-  const columns = useMemo(() => props.columns, []);
+  const columns = useMemo(() => props.columns, [props.columns]);
 
   const table = useReactTable({
     data,
