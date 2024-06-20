@@ -10,8 +10,13 @@ function canMakeLeaveRequests(employee: Employee | undefined) {
   return employee != undefined && (employee.position == "Administrator" || employee.position == "Employee");
 }
 
+function canViewEmployees(employee: Employee | undefined) {
+  return employee != undefined && employee.position != "Employee";
+}
+
 export { 
   canManageProjects,
   canManageEmployees,
-  canMakeLeaveRequests
+  canMakeLeaveRequests,
+  canViewEmployees
 }

@@ -4,11 +4,12 @@ import EmployeeBriefComponent from "src/employees/components/EmployeeBriefCompon
 import useMeQuery from "src/common/hooks/useMeQuery";
 import useSignOutMutation from "src/common/hooks/useSignOutMutation";
 import AvatarSize from "src/common/constants/AvatarSize";
+import { canViewEmployees } from "src/common/utility/policies";
 
 function Navbar() {
   const { pathname } = useLocation();
 
-  const { data: employee } = useMeQuery();
+  const { data: me } = useMeQuery();
 
   const { mutate: signOut } = useSignOutMutation();
 
@@ -24,9 +25,12 @@ function Navbar() {
             <li className="nav-item">
               <Link className={`nav-link ${pathname == '/projects' && 'active'}`} to="projects">Projects</Link>
             </li>
-            <li className="nav-item">
-              <Link className={`nav-link ${pathname == '/employees' && 'active'}`} to="employees">Employees</Link>
-            </li>
+            {
+              canViewEmployees(me) &&
+              <li className="nav-item">
+                <Link className={`nav-link ${pathname == '/employees' && 'active'}`} to="employees">Employees</Link>
+              </li>
+            }
             <li className="nav-item">
               <Link className={`nav-link ${pathname == '/leaveRequests' && 'active'}`} to="leaveRequests">Leave requests</Link>
             </li>
@@ -35,7 +39,7 @@ function Navbar() {
             </li>
           </ul>
           <div className="d-flex align-items-center">
-            {employee && <EmployeeBriefComponent className="text-white me-3" showPosition employee={employee} avatarSize={AvatarSize.Normal} />}
+            {me && <EmployeeBriefComponent className="text-white me-3" showPosition employee={me} avatarSize={AvatarSize.Normal} />}
             <div>
               <button className="btn btn-secondary my-2 my-sm-0" type="button" onClick={_ => signOut()}>Sign out</button>
             </div>
