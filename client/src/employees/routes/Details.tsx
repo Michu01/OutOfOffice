@@ -21,7 +21,7 @@ function EmployeeDetails() {
           employee &&
           <>
             <div className="mb-3">
-              <EmployeeAvatar size={AvatarSize.Large} />
+              <EmployeeAvatar size={AvatarSize.Large} employeeId={employee.id} />
             </div>
             <div className="form-floating mb-3">
               <input className="form-control" id="fullName" placeholder="Full name" defaultValue={employee.fullName} readOnly />

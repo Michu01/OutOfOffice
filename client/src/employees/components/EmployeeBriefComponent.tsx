@@ -12,7 +12,7 @@ function EmployeeBriefComponent(props: Props) {
 
   return (
     <div className={`d-flex flex-row align-items-center text-nowrap ${className}`}>
-      <EmployeeAvatar className="me-1" size={avatarSize} /> 
+      <EmployeeAvatar className="me-1" size={avatarSize} employeeId={employee.id} /> 
       <div>
         <div className="fs-7">{employee.fullName}</div>
         {showPosition && <div className="fs-8">{employee.position}</div>}
