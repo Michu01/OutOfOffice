@@ -38,7 +38,10 @@ function Table(props: Props) {
     manualFiltering: true,
     rowCount,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onColumnFiltersChange: e => {
+      setPagination({ ...pagination, pageIndex: 0 });
+      setColumnFilters(e);
+    },
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel()
   });
