@@ -85,7 +85,7 @@ builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Progra
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-//if (builder.Environment.IsProduction())
+if (builder.Environment.IsProduction())
 {
     var keyVaultUrl = builder.Configuration["KeyVault:Url"]!;
     var keyVaultTenantId = builder.Configuration["KeyVault:TenantId"];
@@ -101,11 +101,11 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
         options.UseSqlServer(builder.Configuration["OutOfOfficeDbConnectionString"]));
 }
 
-//if (builder.Environment.IsDevelopment())
-//{
-//    builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-//}
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+}
 
 var app = builder.Build();
 
@@ -114,6 +114,8 @@ var app = builder.Build();
 
     await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
 }
+
+var spaUrl = app.Environment.IsDevelopment() ? "http://localhost:5173" : "https://out-of-office-two.vercel.app/";
 
 app.UseSwagger();
 
@@ -131,7 +133,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(_ => { });
 
-//app.UseSpa(e => e.UseProxyToSpaDevelopmentServer("http://localhost:5173"));
+app.UseSpa(e => e.UseProxyToSpaDevelopmentServer(spaUrl));
 
 var group = app.MapGroup("api");
 
