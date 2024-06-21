@@ -3,6 +3,7 @@ import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AvatarSize from "src/common/constants/AvatarSize";
 import EmployeeBriefComponent from "src/employees/components/EmployeeBriefComponent";
+import Project from "src/projects/models/Project";
 
 const columnHelper = createColumnHelper<Project>();
 

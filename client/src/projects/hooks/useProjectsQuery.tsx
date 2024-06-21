@@ -3,6 +3,7 @@ import { ColumnFiltersState, PaginationState, SortingState } from "@tanstack/rea
 import "src/common/utility/string";
 import PaginatedResult from "src/common/models/PaginatedResult";
 import apiClient from "src/common/services/apiClient";
+import Project from "src/projects/models/Project";
 
 function useProjectsQuery(pagination: PaginationState, columnFilters: ColumnFiltersState, sorting: SortingState): UseQueryResult<PaginatedResult<Project>> {
   const getSort = (sorting: SortingState) => {

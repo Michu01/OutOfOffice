@@ -1,4 +1,5 @@
 import ApprovalRequest from "src/approvalRequests/models/ApprovalRequest";
+import Employee from "src/employees/models/Employee";
 
 type LeaveRequest = {
   id: number;

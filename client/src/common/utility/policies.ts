@@ -1,3 +1,5 @@
+import Employee from "src/employees/models/Employee";
+
 function canManageProjects(employee: Employee | undefined) {
   return employee != undefined && (employee.position == "Administrator" || employee.position == "ProjectManager");
 }

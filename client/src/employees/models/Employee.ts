@@ -1,4 +1,5 @@
 import LeaveRequest from "src/leaveRequests/models/LeaveRequest";
+import Project from "src/projects/models/Project";
 
 type Employee = {
   id: number;

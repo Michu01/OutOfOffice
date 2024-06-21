@@ -1,3 +1,5 @@
+import Employee from "src/employees/models/Employee";
+
 type Project = {
   id: number;
   name: string;
@@ -9,3 +11,5 @@ type Project = {
   projectManager: Employee;
   employees: Employee[];
 }
+
+export default Project;

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "src/common/services/apiClient";
+import Project from "src/projects/models/Project";
 
 function useProjectQuery(id: number | undefined) {
   const queryFn = async () => {

@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { createMaxLengthRule, requiredRule } from "src/common/utility/validationRules";
 import FormAction from "src/common/types/FormAction";
 import Employee from "src/employees/models/Employee";
+import Project from "src/projects/models/Project";
 
 type Props = {
   action: FormAction;
