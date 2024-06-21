@@ -1,8 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "src/common/services/apiClient";
 import { useNavigate } from "react-router-dom";
 
 function useSignOutMutation() {
+  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
 
   async function signOut() {
@@ -11,7 +13,10 @@ function useSignOutMutation() {
 
   return useMutation({
     mutationFn: signOut,
-    onSuccess: () => navigate(0)
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["isSignedIn"] });
+      navigate("/");
+    }
   });
 }
 

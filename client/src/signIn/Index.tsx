@@ -18,7 +18,11 @@ function SignInIndex() {
     formState: {
       errors
     }
-  } = useForm<SignInFormInputs>();
+  } = useForm<SignInFormInputs>({
+    defaultValues: {
+      fullName: "Administrator"
+    }
+  });
 
   const { mutate, error, isError, isSuccess } = useSignInMutation();
 
