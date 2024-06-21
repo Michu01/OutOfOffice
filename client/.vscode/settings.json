@@ -1,0 +1,8 @@
+{
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/00dec9de-9522-4991-b4b2-a4f7c98975a8/resourceGroups/Michu01OutOfOfficeClient_group/providers/Microsoft.Web/sites/Michu01OutOfOfficeClient",
+  "appService.deploySubpath": "dist"
+}

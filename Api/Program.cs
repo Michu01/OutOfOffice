@@ -9,11 +9,16 @@ using Api.Identity;
 using Api.LeaveRequests;
 using Api.Projects;
 
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+
 using FluentValidation;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,8 +84,28 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+//if (builder.Environment.IsProduction())
+{
+    var keyVaultUrl = builder.Configuration["KeyVault:Url"]!;
+    var keyVaultTenantId = builder.Configuration["KeyVault:TenantId"];
+    var keyVaultClientId = builder.Configuration["KeyVault:ClientId"];
+    var keyVaultClientSecret = builder.Configuration["KeyVault:ClientSecret"];
+
+    var credential = new ClientSecretCredential(keyVaultTenantId, keyVaultClientId, keyVaultClientSecret);
+    var client = new SecretClient(new Uri(keyVaultUrl), credential);
+
+    builder.Configuration.AddAzureKeyVault(client, new KeyVaultSecretManager());
+
+    builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+        options.UseSqlServer(builder.Configuration["OutOfOfficeDbConnectionString"]));
+}
+
+//if (builder.Environment.IsDevelopment())
+//{
+//    builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+//}
 
 var app = builder.Build();
 
@@ -106,7 +131,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(_ => { });
 
-app.UseSpa(e => e.UseProxyToSpaDevelopmentServer("http://localhost:5173"));
+//app.UseSpa(e => e.UseProxyToSpaDevelopmentServer("http://localhost:5173"));
 
 var group = app.MapGroup("api");
 
