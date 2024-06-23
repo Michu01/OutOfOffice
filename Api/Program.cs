@@ -18,7 +18,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,21 +97,26 @@ if (builder.Environment.IsProduction())
     builder.Configuration.AddAzureKeyVault(client, new KeyVaultSecretManager());
 
     builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-        options.UseSqlServer(builder.Configuration["OutOfOfficeDbConnectionString"]));
+        options.UseNpgsql(builder.Configuration["OutOfOfficeDbConnectionString"]));
 }
 
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+    });
 }
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
 
-    await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    await dbContext.Database.MigrateAsync();
 }
 
 var spaUrl = app.Environment.IsDevelopment() ? "http://localhost:5173" : "https://out-of-office-two.vercel.app/";
