@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,14 +16,14 @@ namespace Api.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Subdivision = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Position = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    PeoplePartnerId = table.Column<int>(type: "int", nullable: true),
-                    OutOfOfficeBalance = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FullName = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Subdivision = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    Position = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    PeoplePartnerId = table.Column<int>(type: "integer", nullable: true),
+                    OutOfOfficeBalance = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,14 +39,14 @@ namespace Api.Migrations
                 name: "LeaveRequests",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    AbsenceReason = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EmployeeId = table.Column<int>(type: "integer", nullable: false),
+                    AbsenceReason = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false)
+                    Comment = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,15 +62,15 @@ namespace Api.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    Type = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    ProjectManagerId = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    ProjectManagerId = table.Column<int>(type: "integer", nullable: false),
+                    Comment = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,20 +79,19 @@ namespace Api.Migrations
                         name: "FK_Projects_Employees_ProjectManagerId",
                         column: x => x.ProjectManagerId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "ApprovalRequests",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApproverId = table.Column<int>(type: "int", nullable: false),
-                    LeaveRequestId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ApproverId = table.Column<int>(type: "integer", nullable: false),
+                    LeaveRequestId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Comment = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,6 +105,30 @@ namespace Api.Migrations
                         name: "FK_ApprovalRequests_LeaveRequests_LeaveRequestId",
                         column: x => x.LeaveRequestId,
                         principalTable: "LeaveRequests",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectEmployee",
+                columns: table => new
+                {
+                    ProjectId = table.Column<int>(type: "integer", nullable: false),
+                    EmployeeId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectEmployee", x => new { x.ProjectId, x.EmployeeId });
+                    table.ForeignKey(
+                        name: "FK_ProjectEmployee_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProjectEmployee_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -130,6 +154,11 @@ namespace Api.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectEmployee_EmployeeId",
+                table: "ProjectEmployee",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Projects_ProjectManagerId",
                 table: "Projects",
                 column: "ProjectManagerId");
@@ -142,10 +171,13 @@ namespace Api.Migrations
                 name: "ApprovalRequests");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "ProjectEmployee");
 
             migrationBuilder.DropTable(
                 name: "LeaveRequests");
+
+            migrationBuilder.DropTable(
+                name: "Projects");
 
             migrationBuilder.DropTable(
                 name: "Employees");
